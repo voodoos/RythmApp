@@ -10,39 +10,46 @@ import java.util.ListIterator;
  * Created by ulysse on 14/06/2017.
  */
 
-public class Rythm {
+class Rythm {
     private static final String TAG = "RythmC";
-    Pair<Integer, Integer> signature;
-    ArrayList<Integer> intervals;
-    ListIterator<Integer> cursor;
+    private Pair<Integer, Integer> signature;
+    private ArrayList<Integer> intervals;
+    private ListIterator<Integer> cursor;
+    private int index = 0;
 
-    public Rythm (int times, int unity, ArrayList<Integer> intervals) {
+    Rythm (int times, int unity, ArrayList<Integer> intervals) {
         signature = new Pair<>(times, unity);
         if(setIntervals(intervals))
             restart();
     }
 
-    public Rythm (Pair<Integer, Integer> p, ArrayList<Integer> intervals) {
+    Rythm (Pair<Integer, Integer> p, ArrayList<Integer> intervals) {
         this(p.first, p.second, intervals);
     }
 
-    public void restart() {
+    void restart() {
+        index = 0;
         cursor = intervals.listIterator();
     }
 
-    public boolean hasNext() {
+    boolean hasNext() {
         return cursor.hasNext();
     }
-    public int next() {
-        if(cursor.hasNext())
+    int index() {
+        return index;
+    }
+    int next() {
+        if (cursor.hasNext()){
+            index++;
             return cursor.next();
+    }
         else {
             restart();
             return cursor.next();
         }
     }
 
-    public boolean setIntervals(ArrayList<Integer> intervals) {
+    private boolean setIntervals(ArrayList<Integer> intervals) {
         //Before changing intervals, we check it's ok :
         if(Rythm.checkIntervals(signature, intervals)) {
             this.intervals = intervals;
@@ -51,7 +58,7 @@ public class Rythm {
         return false;
     }
 
-    public static boolean checkIntervals(Pair<Integer, Integer> sig, ArrayList<Integer> inter) {
+    static boolean checkIntervals(Pair<Integer, Integer> sig, ArrayList<Integer> inter) {
         // Ot check that a list of intervals is correct we sum the inverses and check that this is equal to the times unit multiplied by the number of times
         ListIterator<Integer> it = inter.listIterator();
         double sum = 0;
@@ -59,8 +66,8 @@ public class Rythm {
             int n = it.next();
             sum += 1. / (double)n;//n * (sig.second/n);
         }
-        Log.v(TAG, String.valueOf(sum));
-        Log.v(TAG, String.valueOf((double)sig.first / (double)sig.second));
+        if (BuildConfig.DEBUG) Log.v(TAG, String.valueOf(sum));
+        if (BuildConfig.DEBUG) Log.v(TAG, String.valueOf((double)sig.first / (double)sig.second));
 
         return (double)sig.first / (double)sig.second == sum;
     }
