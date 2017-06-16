@@ -1,27 +1,25 @@
 package fr.u31.rythm;
 
-import android.app.Activity;
 import android.util.Log;
-import android.view.ViewDebug;
-import android.widget.TextView;
 
 import java.util.Timer;
 
 /**
  * Created by ulysse on 13/06/2017.
+ *
+ * Metronome can be human or not :
+ * - Non-human metronome = classical metronome
+ * - Human metronome allows one to use it's own rythm
  */
 
-public class Metronome {
+class Metronome extends AbstractMetronome {
     private static final String TAG = "MetronomeC";
     private int t;
     private Timer timer;
-    private TrainActivity activity;
-    private Rythm r;
     private double tempo = 90;
 
-    public Metronome(Rythm r, TrainActivity a) {
-        super();
-
+    Metronome(Rythm r, AbstractTrainActivity a) {
+        super(r, a);
         zero();
         this.activity = a;
         this.r = r;
@@ -31,28 +29,36 @@ public class Metronome {
 
     }
 
-    public void zero() {
+    @Override
+    public void onDestroy() {
+        // We need to cancel timer when destroying !
+        if (BuildConfig.DEBUG) Log.v(TAG, "Stopping timer");
+        stop();
+    }
+
+
+    private void zero() {
         t = 0;
     }
-    public void nextTick(double delay){
-        Log.v(TAG, "delay: "+String.valueOf(delay));
+    private void nextTick(double delay){
+        if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(delay));
         timer.schedule(new TickTask(this), (long)(delay*tempo*100));
     }
 
-    public void stop(){
+    private void stop(){
         timer.cancel();
     }
 
     public void tick() {
         t++;
-
         int duration = r.next();
 
-        Log.v(TAG, "Duration: "+String.valueOf(duration));
+        if (BuildConfig.DEBUG) Log.v(TAG, "Duration: "+String.valueOf(duration));
 
-        activity.setCounter(String.valueOf(duration));
+        activity.setViewCounter(String.valueOf(duration));
+        activity.redNote(r.index());
 
-        Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));
+        if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));
         nextTick(1./(double)duration);
     }
 }
