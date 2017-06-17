@@ -16,7 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrainActivity" android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".TrainActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".HumanTrainActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

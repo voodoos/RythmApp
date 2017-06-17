@@ -59,16 +59,25 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
         leftNotesViews = new ArrayList<>();
 
         ArrayList<Integer> test = new ArrayList<>();
-        //test.add(4);
-        //test.add(4);
         test.add(4);
-        test.add(16);
-        test.add(8);
-        test.add(8);
-        test.add(16);
-        test.add(8);
-        r_right = new Rythm(new Pair<>(3, 4), test);
-        if (dualHanded) {}
+        test.add(4);
+
+        //test.add(4);
+        //test.add(16);
+        //test.add(8);
+        //test.add(8);
+        //test.add(16);
+        //test.add(8);
+
+        try {
+            r_right = new Rythm(new Pair<>(2, 4), test);
+            if (dualHanded) {}
+        } catch (BadRythmException e) {
+            e.printStackTrace();
+            Intent intent1 = new Intent(this, MainActivity.class);
+            startActivity(intent1);
+        }
+
 
         drawRythm(r_right, rightNotesViews, l_right);
         if (dualHanded) drawRythm(r_left, leftNotesViews, l_left);
@@ -129,7 +138,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
         ImageView previousNote = null;
         int i = 0;
 
-        while(r.hasNext()) {
+        do {
             // Adding one note :
             int n = r.next();
 
@@ -159,7 +168,8 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
             layout.addView(note);
             previousNote = note;
             notesViews.add(note);
-        }
+        } while (!r.isFirst());
+        r.restart();
     }
 
     /**
@@ -189,11 +199,8 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
         // Which hand ?
         boolean rightTap = sv.getId() == R.id.RightTap;
 
-        // Getting time
-        long current = System.currentTimeMillis();
-
-        tapAction(rightTap, current);
+        tapAction(rightTap);
     }
 
-    protected abstract void tapAction(boolean right, long time);
+    protected abstract void tapAction(boolean right);
 }

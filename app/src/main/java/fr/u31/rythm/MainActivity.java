@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void start(View v) {
-        Intent intent = new Intent(this, TrainActivity.class);
+        Intent intent = new Intent(this, HumanTrainActivity.class);
         intent.putExtra("dualHanded", false);
         startActivity(intent);
     }

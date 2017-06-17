@@ -14,39 +14,48 @@ class Rythm {
     private static final String TAG = "RythmC";
     private Pair<Integer, Integer> signature;
     private ArrayList<Integer> intervals;
-    private ListIterator<Integer> cursor;
     private int index = 0;
 
-    Rythm (int times, int unity, ArrayList<Integer> intervals) {
+    Rythm (int times, int unity, ArrayList<Integer> intervals) throws BadRythmException {
         signature = new Pair<>(times, unity);
-        if(setIntervals(intervals))
-            restart();
+
+        setIntervals(intervals);
+        restart();
     }
 
-    Rythm (Pair<Integer, Integer> p, ArrayList<Integer> intervals) {
+    Rythm (Pair<Integer, Integer> p, ArrayList<Integer> intervals) throws BadRythmException {
         this(p.first, p.second, intervals);
     }
 
     void restart() {
         index = 0;
-        cursor = intervals.listIterator();
     }
 
+    boolean isFirst() {
+        return index == 0;
+    }
     boolean hasNext() {
-        return cursor.hasNext();
+        return index < intervals.size() - 1;
     }
-    int index() {
-        return index;
-    }
+    int index() { return index; };
+
     int next() {
-        if (cursor.hasNext()){
+        if (hasNext()){
+            if (BuildConfig.DEBUG) Log.v(TAG, "has next");
+            int now = intervals.get(index);
             index++;
-            return cursor.next();
-    }
-        else {
-            restart();
-            return cursor.next();
+            return now;
         }
+        else {
+            if (BuildConfig.DEBUG) Log.v(TAG, "doesn't have next");
+            restart();
+            return intervals.get(index);
+        }
+    }
+
+    int pickPrevious() {
+        if(index > 0) return intervals.get(index - 1);
+        else return intervals.get(intervals.size() - 1);
     }
 
     public boolean is_time() {
@@ -57,16 +66,13 @@ class Rythm {
         return (sum % 2) == 0;
     }
 
-    private boolean setIntervals(ArrayList<Integer> intervals) {
+    private void setIntervals(ArrayList<Integer> intervals) throws BadRythmException {
         //Before changing intervals, we check it's ok :
-        if(Rythm.checkIntervals(signature, intervals)) {
+        Rythm.checkIntervals(signature, intervals);
             this.intervals = intervals;
-            return true;
-        }
-        return false;
     }
 
-    static boolean checkIntervals(Pair<Integer, Integer> sig, ArrayList<Integer> inter) {
+    static void checkIntervals(Pair<Integer, Integer> sig, ArrayList<Integer> inter) throws BadRythmException {
         // Ot check that a list of intervals is correct we sum the inverses and check that this is equal to the times unit multiplied by the number of times
         ListIterator<Integer> it = inter.listIterator();
         double sum = 0;
@@ -77,6 +83,6 @@ class Rythm {
         if (BuildConfig.DEBUG) Log.v(TAG, String.valueOf(sum));
         if (BuildConfig.DEBUG) Log.v(TAG, String.valueOf((double)sig.first / (double)sig.second));
 
-        return (double)sig.first / (double)sig.second == sum;
+        if ( !((double)sig.first / (double)sig.second == sum))  throw new BadRythmException();
     }
 }
