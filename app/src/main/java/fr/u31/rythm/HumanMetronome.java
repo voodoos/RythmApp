@@ -12,6 +12,8 @@ public class HumanMetronome extends AbstractMetronome {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
+
         // nothing to do...
     }
 

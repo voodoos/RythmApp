@@ -49,6 +49,14 @@ class Rythm {
         }
     }
 
+    public boolean is_time() {
+        double sum = 0;
+
+        for (int i = 0; i < index; i++) sum += intervals.get(i);
+
+        return (sum % 2) == 0;
+    }
+
     private boolean setIntervals(ArrayList<Integer> intervals) {
         //Before changing intervals, we check it's ok :
         if(Rythm.checkIntervals(signature, intervals)) {

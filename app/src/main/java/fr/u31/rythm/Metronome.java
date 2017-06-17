@@ -31,6 +31,7 @@ class Metronome extends AbstractMetronome {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         // We need to cancel timer when destroying !
         if (BuildConfig.DEBUG) Log.v(TAG, "Stopping timer");
         stop();
@@ -42,7 +43,7 @@ class Metronome extends AbstractMetronome {
     }
     private void nextTick(double delay){
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(delay));
-        timer.schedule(new TickTask(this), (long)(delay*tempo*100));
+        timer.schedule(new TickTask(this), (long)(delay*tempo*50));
     }
 
     private void stop(){
@@ -51,12 +52,17 @@ class Metronome extends AbstractMetronome {
 
     public void tick() {
         t++;
+
+        // Fancy sound
+        if(r.is_time()) mp.start();
+
         int duration = r.next();
 
         if (BuildConfig.DEBUG) Log.v(TAG, "Duration: "+String.valueOf(duration));
 
         activity.setViewCounter(String.valueOf(duration));
         activity.redNote(r.index());
+
 
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));
         nextTick(1./(double)duration);

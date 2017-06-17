@@ -1,6 +1,7 @@
 package fr.u31.rythm;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
@@ -11,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,9 +62,12 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
         //test.add(4);
         //test.add(4);
         test.add(4);
+        test.add(16);
         test.add(8);
         test.add(8);
-        r_right = new Rythm(new Pair<>(2, 4), test);
+        test.add(16);
+        test.add(8);
+        r_right = new Rythm(new Pair<>(3, 4), test);
         if (dualHanded) {}
 
         drawRythm(r_right, rightNotesViews, l_right);
@@ -129,16 +134,27 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
             int n = r.next();
 
             // Creating the layout params to link the note to the previous one
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(50, RelativeLayout.LayoutParams.MATCH_PARENT);
-            if (previousNote != null) lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
+            //RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(1000, 1000);
+            //if (previousNote != null) lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
 
-            //Creating the Imageview
-            ImageView note = new ImageView(this);
-            note.setLayoutParams(lp);
+            //Creating the Imageview based on the note_template
+            ImageView note = (ImageView) getLayoutInflater().inflate(R.layout.note_template, layout, false);
+
+            // If not the first note, set it's position relatively to the previous one :
+            if (previousNote != null) {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
+                lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
+                note.setLayoutParams(lp);
+            }
+
             note.setId(++i);
 
-            if(n == 4) note.setImageResource(R.drawable.ic_noire);
+            if(n == 1) note.setImageResource(R.drawable.ic_ronde);
+            else if(n == 2) note.setImageResource(R.drawable.ic_blanche);
+            else if(n == 4) note.setImageResource(R.drawable.ic_noire);
             else if (n == 8) note.setImageResource(R.drawable.ic_croche);
+            else if (n == 16) note.setImageResource(R.drawable.ic_double_croche);
+            else if (n == 32) note.setImageResource(R.drawable.ic_triple_croche);
 
             layout.addView(note);
             previousNote = note;
