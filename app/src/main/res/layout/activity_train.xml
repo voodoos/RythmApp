@@ -32,7 +32,6 @@
         android:layout_height="179dp"
         android:background="@android:color/holo_blue_dark"
         android:clickable="true"
-        android:onClick="tap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -44,7 +43,6 @@
         android:layout_height="179dp"
         android:background="@color/colorAccent"
         android:clickable="true"
-        android:onClick="tap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/LeftTap"
         app:layout_constraintRight_toRightOf="parent" />

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 /**
  * The type Train activity.
  */
-public abstract class AbstractTrainActivity extends AppCompatActivity {
+public abstract class AbstractTrainActivity extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "TrainAct";
 
     private RelativeLayout l_left, l_right;
@@ -42,6 +43,9 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
+
+        // Adding listener to tapping surfaces :
+        findViewById(R.id.RightTap).setOnTouchListener(this);
 
         Intent intent = getIntent();
         dualHanded = intent.getBooleanExtra("dualHanded", false);
@@ -238,11 +242,15 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
      *
      * @param sv the sv
      */
-    public void tap(View sv) {
+    public boolean onTouch(View sv, MotionEvent me) {
         // Which hand ?
         boolean rightTap = sv.getId() == R.id.RightTap;
 
-        tapAction(rightTap);
+        if(me.getActionMasked() == MotionEvent.ACTION_DOWN)
+            tapAction(rightTap);
+
+
+        return true;
     }
 
     protected abstract void tapAction(boolean right);
