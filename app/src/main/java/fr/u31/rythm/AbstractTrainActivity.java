@@ -1,8 +1,10 @@
 package fr.u31.rythm;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +30,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
     private static final String TAG = "TrainAct";
 
     private RelativeLayout l_left, l_right;
+    private ProgressBar progressBar;
 
     protected boolean dualHanded;
 
@@ -53,14 +58,23 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
+        //Getting pointer to the progressbar :
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         // Getting pointer to the rythm layout :
         l_right = (RelativeLayout) findViewById(R.id.rl_rythm);
         rightNotesViews = new ArrayList<>();
         leftNotesViews = new ArrayList<>();
 
         ArrayList<Integer> test = new ArrayList<>();
+        //test.add(4);
+        //test.add(4);
+
+
         test.add(4);
-        test.add(4);
+        test.add(8);
+
+        test.add(8);
 
         //test.add(4);
         //test.add(16);
@@ -129,6 +143,35 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
     }
 
     /**
+     * Set progressbar.
+     *
+     * @param progress the current progress
+     */
+    protected void moveProgress(final double progress){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(progress < 0) {
+                    progressBar.getProgressDrawable().setColorFilter(Color.parseColor("#D41C1C"), PorterDuff.Mode.SRC_IN);
+                }
+                else {
+                    progressBar.getProgressDrawable().setColorFilter(Color.parseColor("#20B2AA"), PorterDuff.Mode.SRC_IN);
+                }
+
+                int newProgress = (int)(Math.max(((double)progressBar.getProgress()) + progress, 0));
+
+                // will update the "progress" propriety of seekbar until it reaches progress
+                ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", newProgress);
+                animation.setDuration(100); // 0.5 second
+                animation.setInterpolator(new DecelerateInterpolator());
+                animation.start();
+
+                //progressBar.setProgress((int)(Math.max(((double)progressBar.getProgress()) + progress, 0)));
+            }
+        });
+    }
+
+    /**
      * That function draw a Rythm and store notes views in the corresponding NotesViews array
      */
     private void drawRythm(Rythm r, ArrayList<ImageView> notesViews, RelativeLayout layout) {
@@ -140,7 +183,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity {
 
         do {
             // Adding one note :
-            int n = r.next();
+            int n = r.currentAndForward();
 
             // Creating the layout params to link the note to the previous one
             //RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(1000, 1000);

@@ -39,23 +39,24 @@ class Rythm {
     }
     int index() { return index; };
 
-    int next() {
-        if (hasNext()){
-            if (BuildConfig.DEBUG) Log.v(TAG, "has next");
-            int now = intervals.get(index);
-            index++;
-            return now;
-        }
-        else {
-            if (BuildConfig.DEBUG) Log.v(TAG, "doesn't have next");
-            restart();
-            return intervals.get(index);
-        }
+    void forward() {
+        // Looping !
+        index = (index + 1) % intervals.size();
+    }
+
+    void backward() {
+        if(index > 0) index--;
+        else index = intervals.size() - 1;
+    }
+    int currentAndForward() {
+        int now = intervals.get(index);
+        forward();
+        return now;
     }
 
     int pickPrevious() {
-        if(index > 0) return intervals.get(index - 1);
-        else return intervals.get(intervals.size() - 1);
+        backward();
+        return currentAndForward();
     }
 
     public boolean is_time() {

@@ -35,18 +35,31 @@ public class HumanMetronome extends AbstractMetronome {
             tempo = delta*previousNote;
 
             double deltaTempo = Math.abs(tempo - previousTempo);
+            int progress;
 
             if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Delta : " + deltaTempo);
-            if(deltaTempo < 100) activity.setViewCounter("GOOD");
-            else if(deltaTempo < 300) activity.setViewCounter("BOF");
-            else activity.setViewCounter("BAD");
+
+            if(deltaTempo < 100) {
+                activity.setViewCounter("GOOD");
+                progress = 10;
+            }
+            else if(deltaTempo < 300) {
+                activity.setViewCounter("BOF");
+                progress = 5;
+            }
+            else {
+                activity.setViewCounter("BAD");
+                progress = -10;
+            }
+
+            activity.moveProgress(progress);
         }
 
 
 
         activity.redNote(r.index());
 
-        previousNote =  r.next();
+        previousNote =  r.currentAndForward();
         previousTime = tapTime;
         previousTempo = tempo;
 

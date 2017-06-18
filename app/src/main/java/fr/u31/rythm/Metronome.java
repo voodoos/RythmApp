@@ -56,7 +56,7 @@ class Metronome extends AbstractMetronome {
         // Fancy sound
         if(r.is_time()) mp.start();
 
-        int duration = r.next();
+        int duration = r.currentAndForward();
 
         if (BuildConfig.DEBUG) Log.v(TAG, "Duration: "+String.valueOf(duration));
 

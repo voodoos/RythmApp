@@ -8,5 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Widget.AppCompat.ProgressBar.Horizontal.Big" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:scaleY">4</item>
+    </style>
+
 
 </resources>

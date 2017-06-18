@@ -30,7 +30,6 @@
         android:id="@+id/LeftTap"
         android:layout_width="0dp"
         android:layout_height="179dp"
-        android:layout_marginBottom="1dp"
         android:background="@android:color/holo_blue_dark"
         android:clickable="true"
         android:onClick="tap"
@@ -43,7 +42,6 @@
         android:id="@+id/RightTap"
         android:layout_width="0dp"
         android:layout_height="179dp"
-        android:layout_marginBottom="1dp"
         android:background="@color/colorAccent"
         android:clickable="true"
         android:onClick="tap"
@@ -62,5 +60,15 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal.Big"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="0"
+        app:layout_constraintBottom_toTopOf="@+id/RightTap"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -20,6 +20,6 @@ public class HumanTrainActivity extends AbstractTrainActivity {
     @Override
     protected void tapAction(boolean right) {
         if (right) m_right.tick();
-        else m_left.tick();
+        else if(dualHanded) m_left.tick();
     }
 }
