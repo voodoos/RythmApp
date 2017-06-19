@@ -132,6 +132,53 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     }
 
     /**
+     * ReSet the late display.
+     *
+     */
+    protected void resetLateEarly(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView)findViewById(R.id.early)).setText("");
+                ((TextView)findViewById(R.id.late)).setText("");
+            }
+        });
+    }
+
+    /**
+     * Set the late display.
+     *
+     * @param i the lateness from 1 to infinity
+     */
+    protected void setLate(final int i){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView)findViewById(R.id.early)).setText("");
+                if(i > 1) ((TextView)findViewById(R.id.late)).setText("<<");
+                else ((TextView)findViewById(R.id.late)).setText("<");
+            }
+        });
+    }
+
+    /**
+     * Set the early display.
+     *
+     * @param i the lateness from 1 to infinity
+     */
+    protected void setEarly(final int i){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView)findViewById(R.id.late)).setText("");
+                if(i > 1) ((TextView)findViewById(R.id.early)).setText(">>");
+                else ((TextView)findViewById(R.id.early)).setText(">");
+            }
+        });
+    }
+
+
+    /**
      * Set view note color.
      *
      * @param id    the id of the image
@@ -185,23 +232,29 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         ImageView previousNote = null;
         int i = 0;
 
+        //Displaying signature :
+        TextView vduree = (TextView) findViewById(R.id.duree);
+        TextView vunite = (TextView) findViewById(R.id.unite);
+
+        vduree.setText(String.valueOf(r.getDuree()));
+        vunite.setText(String.valueOf(r.getUnite()));
+
         do {
             // Adding one note :
             int n = r.currentAndForward();
-
-            // Creating the layout params to link the note to the previous one
-            //RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(1000, 1000);
-            //if (previousNote != null) lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
 
             //Creating the Imageview based on the note_template
             ImageView note = (ImageView) getLayoutInflater().inflate(R.layout.note_template, layout, false);
 
             // If not the first note, set it's position relatively to the previous one :
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
             if (previousNote != null) {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
                 lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
-                note.setLayoutParams(lp);
             }
+            else {
+                lp.addRule(RelativeLayout.RIGHT_OF, R.id.signature);
+            }
+            note.setLayoutParams(lp);
 
             note.setId(++i);
 

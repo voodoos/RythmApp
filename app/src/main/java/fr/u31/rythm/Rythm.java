@@ -27,6 +27,14 @@ class Rythm {
         this(p.first, p.second, intervals);
     }
 
+    int getDuree() {
+        return signature.first;
+    }
+
+    int getUnite() {
+        return signature.second;
+    }
+
     void restart() {
         index = 0;
     }
@@ -37,6 +45,7 @@ class Rythm {
     boolean hasNext() {
         return index < intervals.size() - 1;
     }
+
     int index() { return index; };
 
     void forward() {
@@ -48,6 +57,7 @@ class Rythm {
         if(index > 0) index--;
         else index = intervals.size() - 1;
     }
+
     int currentAndForward() {
         int now = intervals.get(index);
         forward();
