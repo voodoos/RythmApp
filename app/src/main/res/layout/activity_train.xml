@@ -23,6 +23,7 @@
         android:layout_height="179dp"
         android:background="@android:color/holo_blue_dark"
         android:clickable="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -58,7 +59,7 @@
 
         <LinearLayout
             android:id="@+id/signature"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
