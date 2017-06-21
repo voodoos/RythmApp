@@ -19,7 +19,12 @@ public class HumanTrainActivity extends AbstractTrainActivity {
 
     @Override
     protected void tapAction(boolean right) {
-        if (right) m_right.tick();
+        if (right) {
+            // Tick return the delta, score evaluates it
+            Score.scdata scd = score.evaluate(m_right.tick());
+            setViewCounter(scd.message);
+            moveProgress(scd.progres);
+        }
         else if(dualHanded) m_left.tick();
     }
 }

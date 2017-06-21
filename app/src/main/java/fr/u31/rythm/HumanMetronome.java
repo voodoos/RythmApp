@@ -1,6 +1,7 @@
 package fr.u31.rythm;
 
 import android.util.Log;
+import android.util.Pair;
 
 /**
  * Created by ulysse on 16/06/2017.
@@ -29,8 +30,8 @@ public class HumanMetronome extends AbstractMetronome {
     }
 
     @Override
-    public void tick() {
-
+    public double tick() {
+        double ret = 0;
         long tapTime = System.currentTimeMillis();
 
         double tempo = 0;
@@ -39,34 +40,13 @@ public class HumanMetronome extends AbstractMetronome {
             tempo = delta*previousNote;
 
             if(previousTempo.getNbrOfSamples() > 0) {
-                double deltaTempo = Math.abs(tempo - previousTempo.getAverage());
+                double deltaTempo = tempo - previousTempo.getAverage();
                 int progress;
-                boolean late = tempo - previousTempo.getAverage() > 0;
 
                 if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Delta : " + deltaTempo);
 
-                if (deltaTempo < 25) {
-                    activity.setViewCounter("PERFECT");
-                    progress = 15;
-                    activity.resetLateEarly();
-                }
-                else if (deltaTempo < 100) {
-                    activity.setViewCounter("GOOD");
-                    progress = 10;
-                    activity.resetLateEarly();
-                } else if (deltaTempo < 300) {
-                    activity.setViewCounter("BOF");
-                    progress = 5;
-                    if (late) activity.setLate(1);
-                    if (!late) activity.setEarly(1);
-                } else {
-                    activity.setViewCounter("BAD");
-                    progress = -10;
-                    if (late) activity.setLate(2);
-                    if (!late) activity.setEarly(2);
-                }
 
-                activity.moveProgress(progress);
+                ret = deltaTempo;
             }
 
             previousTempo.addSample(tempo);
@@ -78,6 +58,8 @@ public class HumanMetronome extends AbstractMetronome {
 
         previousNote =  r.currentAndForward();
         previousTime = tapTime;
+
+        return ret;
 
     }
 }

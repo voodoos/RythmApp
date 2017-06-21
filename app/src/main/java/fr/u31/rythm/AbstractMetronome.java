@@ -23,5 +23,5 @@ abstract class AbstractMetronome {
         mp.release();
     }
 
-    public abstract void tick();
+    public abstract double tick();
 }

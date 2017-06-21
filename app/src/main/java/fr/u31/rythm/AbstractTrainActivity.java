@@ -2,9 +2,11 @@ package fr.u31.rythm;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +32,13 @@ import java.util.ArrayList;
 public abstract class AbstractTrainActivity extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "TrainAct";
 
+    protected SharedPreferences prefs;
     private RelativeLayout l_left, l_right;
     private ProgressBar progressBar;
 
     protected boolean dualHanded;
 
+    protected Score score;
     protected AbstractMetronome m_left, m_right;
     protected Rythm r_left, r_right;
     protected ArrayList<ImageView> rightNotesViews, leftNotesViews;
@@ -47,8 +51,13 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         // Adding listener to tapping surfaces :
         findViewById(R.id.RightTap).setOnTouchListener(this);
 
+        // The intent (used to get parameters from parent view) :
         Intent intent = getIntent();
+        // Dual handed mode ?
         dualHanded = intent.getBooleanExtra("dualHanded", false);
+
+        // We have preferences :
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Adding the ActionBar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -61,6 +70,11 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
+
+        // Creating some Score :
+        int d = Integer.parseInt(prefs.getString("pref_difficulty", "2"));
+
+        score = new Score(Difficulty.which(d), getResources());
 
         //Getting pointer to the progressbar :
         progressBar = (ProgressBar) findViewById(R.id.progressBar);

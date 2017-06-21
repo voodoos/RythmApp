@@ -50,7 +50,7 @@ class Metronome extends AbstractMetronome {
         timer.cancel();
     }
 
-    public void tick() {
+    public double tick() {
         t++;
 
         // Fancy sound
@@ -66,5 +66,7 @@ class Metronome extends AbstractMetronome {
 
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));
         nextTick(1./(double)duration);
+
+        return 0D;
     }
 }
