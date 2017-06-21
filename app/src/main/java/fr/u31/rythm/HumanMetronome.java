@@ -11,10 +11,14 @@ public class HumanMetronome extends AbstractMetronome {
 
     private long previousTime = 0L;
     private int previousNote = 0;
-    private double previousTempo = 0D;
+    private Average previousTempo;
 
     public HumanMetronome(Rythm r, AbstractTrainActivity a) {
+
         super(r, a);
+
+        // We average the tempo other 5 samples :
+        previousTempo = new Average(5);
     }
 
     @Override
@@ -34,31 +38,33 @@ public class HumanMetronome extends AbstractMetronome {
             long delta = tapTime - previousTime;
             tempo = delta*previousNote;
 
-            double deltaTempo = Math.abs(tempo - previousTempo);
-            int progress;
-            boolean late = tempo - previousTempo > 0;
+            if(previousTempo.getNbrOfSamples() > 0) {
+                double deltaTempo = Math.abs(tempo - previousTempo.getAverage());
+                int progress;
+                boolean late = tempo - previousTempo.getAverage() > 0;
 
-            if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Delta : " + deltaTempo);
+                if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Delta : " + deltaTempo);
 
-            if(deltaTempo < 100) {
-                activity.setViewCounter("GOOD");
-                progress = 10;
-                activity.resetLateEarly();
-            }
-            else if(deltaTempo < 300) {
-                activity.setViewCounter("BOF");
-                progress = 5;
-                if(late) activity.setLate(1);
-                if(!late) activity.setEarly(1);
-            }
-            else {
-                activity.setViewCounter("BAD");
-                progress = -10;
-                if(late) activity.setLate(2);
-                if(!late) activity.setEarly(2);
+                if (deltaTempo < 100) {
+                    activity.setViewCounter("GOOD");
+                    progress = 10;
+                    activity.resetLateEarly();
+                } else if (deltaTempo < 300) {
+                    activity.setViewCounter("BOF");
+                    progress = 5;
+                    if (late) activity.setLate(1);
+                    if (!late) activity.setEarly(1);
+                } else {
+                    activity.setViewCounter("BAD");
+                    progress = -10;
+                    if (late) activity.setLate(2);
+                    if (!late) activity.setEarly(2);
+                }
+
+                activity.moveProgress(progress);
             }
 
-            activity.moveProgress(progress);
+            previousTempo.addSample(tempo);
         }
 
 
@@ -67,7 +73,6 @@ public class HumanMetronome extends AbstractMetronome {
 
         previousNote =  r.currentAndForward();
         previousTime = tapTime;
-        previousTempo = tempo;
 
     }
 }
