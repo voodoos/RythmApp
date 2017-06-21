@@ -17,8 +17,8 @@ public class HumanMetronome extends AbstractMetronome {
 
         super(r, a);
 
-        // We average the tempo other 5 samples :
-        previousTempo = new Average(5);
+        // We average the tempo other 4 samples :
+        previousTempo = new Average(4);
     }
 
     @Override
@@ -45,7 +45,12 @@ public class HumanMetronome extends AbstractMetronome {
 
                 if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Delta : " + deltaTempo);
 
-                if (deltaTempo < 100) {
+                if (deltaTempo < 25) {
+                    activity.setViewCounter("PERFECT");
+                    progress = 15;
+                    activity.resetLateEarly();
+                }
+                else if (deltaTempo < 100) {
                     activity.setViewCounter("GOOD");
                     progress = 10;
                     activity.resetLateEarly();
