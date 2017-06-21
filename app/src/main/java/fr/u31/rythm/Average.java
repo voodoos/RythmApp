@@ -6,11 +6,11 @@ import java.util.ArrayList;
  * Created by ulysse on 21/06/2017.
  */
 
-public class Average {
-    ArrayList<Double> samples;
-    int index = 0;
-    int nbrOfSamples = 0;
-    int maxSamples;
+class Average {
+    private ArrayList<Double> samples;
+    private int index = 0;
+    private int nbrOfSamples = 0;
+    private int maxSamples;
 
     Average(int numberOfSamples) {
         maxSamples = numberOfSamples;
