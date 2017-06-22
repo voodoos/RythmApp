@@ -36,16 +36,16 @@ public class Score {
     private static final String TAG = "Score";
     class scdata { public String message; public double progres; public Lateness lateness; }
 
-    String[] p, g, b;
+    int[] p, g, b;
     Difficulty d;
     double score = 0;
 
     Score(Difficulty d, Resources r){
         this.d = d;
 
-        p = r.getStringArray(R.array.difficulty_levels_perfect_treshold);
-        g = r.getStringArray(R.array.difficulty_levels_good_treshold);
-        b = r.getStringArray(R.array.difficulty_levels_bof_treshold);
+        p = r.getIntArray(R.array.difficulty_levels_perfect_treshold);
+        g = r.getIntArray(R.array.difficulty_levels_good_treshold);
+        b = r.getIntArray(R.array.difficulty_levels_bof_treshold);
 
         if (BuildConfig.DEBUG) Log.v(TAG, "DIfficulty : " + String.valueOf(d));
     }
@@ -59,16 +59,16 @@ public class Score {
         boolean late = delta > 0;
         delta = Math.abs(delta);
 
-        if (delta < Double.parseDouble(p[d.getValue()])) {
+        if (delta < p[d.getValue()]) {
             message = "PERFECT";
             progress = 15;
         }
-        else if (delta <  Double.parseDouble(g[d.getValue()])) {
+        else if (delta < g[d.getValue()]) {
             message = "GOOD";
             progress = 10;
             if (late) lateness = Lateness.LATE;
             if (!late) lateness = Lateness.EARLY;
-        } else if (delta <  Double.parseDouble(b[d.getValue()])) {
+        } else if (delta < b[d.getValue()]) {
             message =" BOF";
             progress = 5;
             if (late) lateness = Lateness.LATE;

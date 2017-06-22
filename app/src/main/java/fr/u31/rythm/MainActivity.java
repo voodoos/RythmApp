@@ -1,6 +1,8 @@
 package fr.u31.rythm;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +13,8 @@ import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
 
+    protected SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+        // We have preferences :
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // This sets the default value once and for all (not at everylaunch)
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 
         // Populating the difficulty menu :
@@ -43,7 +51,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void start(View v) {
-        Intent intent = new Intent(this, HumanTrainActivity.class);
+        Intent intent;
+
+        if(prefs.getBoolean("pref_rythm", false))
+            intent = new Intent(this, TrainActivity.class);
+        else intent = new Intent(this, HumanTrainActivity.class);
+
         intent.putExtra("dualHanded", false);
         startActivity(intent);
     }
