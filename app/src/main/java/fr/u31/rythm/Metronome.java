@@ -54,7 +54,7 @@ class Metronome extends AbstractMetronome {
         t++;
 
         // Fancy sound
-        if(r.is_time()) mp.start();
+        //if(r.is_time()) mp.start();
 
         int duration = r.currentAndForward();
 
