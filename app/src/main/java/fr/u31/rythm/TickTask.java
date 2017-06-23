@@ -7,8 +7,8 @@ import java.util.TimerTask;
  */
 
 public class TickTask extends TimerTask {
-    Metronome m;
-    public TickTask(Metronome m) {
+    AbstractMetronome m;
+    public TickTask(AbstractMetronome m) {
         super();
         this.m = m;
     }
