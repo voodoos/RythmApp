@@ -25,7 +25,8 @@ class Metronome extends AbstractMetronome {
         this.r = r;
 
         timer = new Timer();
-        tick();
+        tick(true);
+        tick(false);
 
     }
 
@@ -50,7 +51,7 @@ class Metronome extends AbstractMetronome {
         timer.cancel();
     }
 
-    public double tick() {
+    public double tick(boolean right) {
         t++;
 
         // Fancy sound
@@ -61,7 +62,7 @@ class Metronome extends AbstractMetronome {
         if (BuildConfig.DEBUG) Log.v(TAG, "Duration: "+String.valueOf(duration));
 
         activity.setViewCounter(String.valueOf(duration));
-        activity.redNote(r.index());
+        activity.redNote(r.index(), right);
 
 
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));

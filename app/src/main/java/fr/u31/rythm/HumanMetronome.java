@@ -30,7 +30,7 @@ public class HumanMetronome extends AbstractMetronome {
     }
 
     @Override
-    public double tick() {
+    public double tick(boolean right) {
         double ret = 0;
         long tapTime = System.currentTimeMillis();
 
@@ -54,7 +54,7 @@ public class HumanMetronome extends AbstractMetronome {
 
 
 
-        activity.redNote(r.index());
+        activity.redNote(r.index(), right);
 
         previousNote =  r.currentAndForward();
         previousTime = tapTime;

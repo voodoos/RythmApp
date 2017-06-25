@@ -50,8 +50,6 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
 
-        // Adding listener to tapping surfaces :
-        findViewById(R.id.RightTap).setOnTouchListener(this);
 
         // The intent (used to get parameters from parent view) :
         Intent intent = getIntent();
@@ -83,18 +81,19 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
         // Getting pointer to the rythm layout :
         l_right = (LinearLayout) findViewById(R.id.rl_rythm);
+        l_left = (LinearLayout) findViewById(R.id.rl_rythm_left);
         rightNotesViews = new ArrayList<>();
         leftNotesViews = new ArrayList<>();
 
         ArrayList<Integer> test = new ArrayList<>();
+        ArrayList<Integer> test2 = new ArrayList<>();
+        test2.add(4);
+        test2.add(4);
+
+
         test.add(4);
-        test.add(4);
-
-
-        //test.add(4);
-        //test.add(8);
-
-        //test.add(8);
+        test.add(8);
+        test.add(8);
 
         //test.add(4);
         //test.add(16);
@@ -105,7 +104,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
         try {
             r_right = new Rythm(new Pair<>(2, 4), test);
-            if (dualHanded) {}
+            if (dualHanded) r_left = new Rythm(new Pair<>(2, 4), test2);
         } catch (BadRythmException e) {
             e.printStackTrace();
             Intent intent1 = new Intent(this, MainActivity.class);
@@ -113,8 +112,15 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         }
 
 
+        // Adding listener to tapping surfaces :
+        findViewById(R.id.RightTap).setOnTouchListener(this);
+
         drawRythm(r_right, rightNotesViews, l_right, this);
-        if (dualHanded) drawRythm(r_left, leftNotesViews, l_left, this);
+        if (dualHanded) {
+            drawRythm(r_left, leftNotesViews, l_left, this);
+            findViewById(R.id.LeftTap).setVisibility(View.VISIBLE);
+            findViewById(R.id.LeftTap).setOnTouchListener(this);
+        }
 
         newMetronomes();
     }
@@ -296,15 +302,20 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
      *
      * @param id the id
      */
-    public void redNote(int id) {
+    public void redNote(int id, boolean right) {
+        ArrayList<ImageView> iws;
+
+        if(right) iws = rightNotesViews;
+        else iws = leftNotesViews;
+
         //Resetting all notes to black :
-        for (ImageView i: rightNotesViews) {
+        for (ImageView i: iws) {
             setViewNoteColor(i, Color.parseColor("#000000"));
         }
 
         // Actual note in red :
-        if (BuildConfig.DEBUG) Log.v(TAG, "id: " + id + "Viewid: " + rightNotesViews.get(id));
-        setViewNoteColor(rightNotesViews.get(id), Color.parseColor("#D41C1C"));
+        if (BuildConfig.DEBUG) Log.v(TAG, "id: " + id + "Viewid: " + iws.get(id));
+        setViewNoteColor(iws.get(id), Color.parseColor("#D41C1C"));
     }
 
     /* onCLick actions */

@@ -26,7 +26,7 @@ public class PingMachine extends AbstractMetronome {
         return new Rythm(unit, unit, al);
     }
     @Override
-    public double tick() {
+    public double tick(boolean right) {
         mp.start();
         return 0;
     }

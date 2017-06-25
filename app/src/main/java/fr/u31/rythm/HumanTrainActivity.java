@@ -22,10 +22,14 @@ public class HumanTrainActivity extends AbstractTrainActivity {
     protected void tapAction(boolean right) {
         if (right) {
             // Tick return the delta, score evaluates it
-            Score.scdata scd = score.evaluate(m_right.tick());
+            Score.scdata scd = score.evaluate(m_right.tick(right));
             setViewCounter(scd.message);
             moveProgress(scd.progres);
         }
-        else if(dualHanded) m_left.tick();
+        else if(dualHanded) {
+            Score.scdata scd = score.evaluate(m_left.tick(right));
+            setViewCounter(scd.message);
+            moveProgress(scd.progres);
+        }
     }
 }

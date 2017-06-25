@@ -14,6 +14,6 @@ public class TickTask extends TimerTask {
     }
     @Override
     public void run() {
-        m.tick();
+        m.tick(true);
     }
 }
