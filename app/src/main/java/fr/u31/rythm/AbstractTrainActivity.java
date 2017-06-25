@@ -1,6 +1,7 @@
 package fr.u31.rythm;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,10 +32,10 @@ import java.util.ArrayList;
  * The type Train activity.
  */
 public abstract class AbstractTrainActivity extends AppCompatActivity implements View.OnTouchListener {
-    private static final String TAG = "TrainAct";
+    private static final String TAG = "AbstractTrainAct";
 
     protected SharedPreferences prefs;
-    private RelativeLayout l_left, l_right;
+    private LinearLayout l_left, l_right;
     private ProgressBar progressBar;
 
     protected boolean dualHanded;
@@ -80,19 +82,19 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Getting pointer to the rythm layout :
-        l_right = (RelativeLayout) findViewById(R.id.rl_rythm);
+        l_right = (LinearLayout) findViewById(R.id.rl_rythm);
         rightNotesViews = new ArrayList<>();
         leftNotesViews = new ArrayList<>();
 
         ArrayList<Integer> test = new ArrayList<>();
-        //test.add(4);
-        //test.add(4);
-
-
         test.add(4);
-        test.add(8);
+        test.add(4);
 
-        test.add(8);
+
+        //test.add(4);
+        //test.add(8);
+
+        //test.add(8);
 
         //test.add(4);
         //test.add(16);
@@ -111,8 +113,8 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         }
 
 
-        drawRythm(r_right, rightNotesViews, l_right);
-        if (dualHanded) drawRythm(r_left, leftNotesViews, l_left);
+        drawRythm(r_right, rightNotesViews, l_right, this);
+        if (dualHanded) drawRythm(r_left, leftNotesViews, l_left, this);
 
         newMetronomes();
     }
@@ -239,36 +241,39 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     /**
      * That function draw a Rythm and store notes views in the corresponding NotesViews array
      */
-    private void drawRythm(Rythm r, ArrayList<ImageView> notesViews, RelativeLayout layout) {
+    static void drawRythm(Rythm r, ArrayList<ImageView> notesViews, LinearLayout layout, Activity act) {
         r.restart();
-        notesViews.clear();
+        if  (notesViews != null) notesViews.clear();
 
         ImageView previousNote = null;
         int i = 0;
 
         //Displaying signature :
-        TextView vduree = (TextView) findViewById(R.id.duree);
-        TextView vunite = (TextView) findViewById(R.id.unite);
+        LinearLayout sig = (LinearLayout) act.getLayoutInflater().inflate(R.layout.signature, layout, false);
+        //TextView vduree = (TextView) act.findViewById(R.id.duree);
+        //TextView vunite = (TextView) act.findViewById(R.id.unite);
 
-        vduree.setText(String.valueOf(r.getDuree()));
-        vunite.setText(String.valueOf(r.getUnite()));
+        ((TextView) sig.getChildAt(0)).setText(String.valueOf(r.getDuree()));
+        ((TextView) sig.getChildAt(1)).setText(String.valueOf(r.getUnite()));
+
+        layout.addView(sig); // Attaching sig to its root
 
         do {
             // Adding one note :
             int n = r.currentAndForward();
 
             //Creating the Imageview based on the note_template
-            ImageView note = (ImageView) getLayoutInflater().inflate(R.layout.note_template, layout, false);
+            ImageView note = (ImageView) act.getLayoutInflater().inflate(R.layout.note_template, layout, false);
 
             // If not the first note, set it's position relatively to the previous one :
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
+            /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
             if (previousNote != null) {
                 lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
             }
             else {
                 lp.addRule(RelativeLayout.RIGHT_OF, R.id.signature);
             }
-            note.setLayoutParams(lp);
+            note.setLayoutParams(lp);*/
 
             note.setId(++i);
 
@@ -281,7 +286,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
             layout.addView(note);
             previousNote = note;
-            notesViews.add(note);
+            if(notesViews != null) notesViews.add(note);
         } while (!r.isFirst());
         r.restart();
     }

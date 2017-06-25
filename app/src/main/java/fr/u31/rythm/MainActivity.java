@@ -6,12 +6,18 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainAct";
 
     protected SharedPreferences prefs;
 
@@ -28,18 +34,30 @@ public class MainActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 
-        // Populating the difficulty menu :
-        Spinner spinner = (Spinner) findViewById(R.id.difficulty_spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.difficulty_levels, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Dsplaying the list of rythms :
+        ArrayList<Integer> test = new ArrayList<>();
+        //test.add(4);
+        //test.add(4);
 
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
 
-        spinner.setSelection(2);
+        test.add(4);
+        test.add(8);
+
+        test.add(8);
+
+        //test.add(4);
+        //test.add(16);
+        //test.add(8);
+        //test.add(8);
+        //test.add(16);
+        //test.add(8);
+
+        try {
+            AbstractTrainActivity.drawRythm(new Rythm(new Pair<>(2, 4), test),null, (LinearLayout) findViewById(R.id.part1), this);
+        } catch (BadRythmException e) {
+            e.printStackTrace();
+            if (BuildConfig.DEBUG) Log.v(TAG, "Arg bad rythm.");
+        }
 
     }
     // Menu icons are inflated just as they were with actionbar

@@ -5,6 +5,7 @@ package fr.u31.rythm;
  */
 
 public class HumanTrainActivity extends AbstractTrainActivity {
+    private static final String TAG = "HumanTrainAct";
     @Override
     protected void newMetronomes() {
         m_right = new HumanMetronome(r_right, this);
