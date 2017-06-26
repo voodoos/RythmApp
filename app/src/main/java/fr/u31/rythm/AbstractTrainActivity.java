@@ -4,26 +4,21 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -253,8 +248,8 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         //TextView vduree = (TextView) act.findViewById(R.id.duree);
         //TextView vunite = (TextView) act.findViewById(R.id.unite);
 
-        ((TextView) sig.getChildAt(0)).setText(String.valueOf(r.getDuree()));
-        ((TextView) sig.getChildAt(1)).setText(String.valueOf(r.getUnite()));
+        ((TextView) sig.getChildAt(0)).setText(String.valueOf(r.getBeats()));
+        ((TextView) sig.getChildAt(1)).setText(String.valueOf(r.getUnit()));
 
         layout.addView(sig); // Attaching sig to its root
 

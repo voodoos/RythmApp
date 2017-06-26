@@ -5,4 +5,8 @@
 
     <string name="pref_difficulty">Difficulty</string>
     <string name="pref_rythm">Ping machine</string>
+
+
+    <!-- Exercises names -->
+    <string name="ex_0"></string>
 </resources>

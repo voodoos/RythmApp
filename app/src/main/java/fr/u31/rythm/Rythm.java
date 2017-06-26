@@ -27,11 +27,11 @@ class Rythm {
         this(p.first, p.second, intervals);
     }
 
-    int getDuree() {
+    int getBeats() {
         return signature.first;
     }
 
-    int getUnite() {
+    int getUnit() {
         return signature.second;
     }
 

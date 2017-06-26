@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Exercises names are stored in the string.xml file -->
+<Exercises>
+    <Exercise id="0" bpm="96">
+        <rythm>0</rythm>
+        <rythm>1</rythm>
+    </Exercise>
+</Exercises>

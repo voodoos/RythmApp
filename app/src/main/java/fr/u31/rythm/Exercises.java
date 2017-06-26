@@ -25,6 +25,7 @@ public class Exercises {
     private static Exercises instance = new Exercises();
 
     private HashMap<Integer, Rythm> rythms = new HashMap<>();
+    private HashMap<Integer, Exercise> exercises = new HashMap<>();
 
     private Exercises(){
     }
@@ -32,6 +33,67 @@ public class Exercises {
     public static Exercises getInstance() { return instance; }
 
     void loadExercises(Context ctx) {
+        //First we parse the Rythms file :
+        loadRythms(ctx);
+
+        // Then the exercises file :
+        XmlResourceParser xpp = ctx.getResources().getXml(R.xml.data_exercises);
+        try {
+            int id = -1, bpm = -1, r_left = -1, r_right = -1;
+            while (xpp.next() != XmlResourceParser.END_DOCUMENT) {
+                int xppet = xpp.getEventType();
+                if (xppet != XmlResourceParser.START_TAG) {
+                    //if (BuildConfig.DEBUG) Log.v(TAG, "NONSTART: " + xpp.getName());
+                    if (xppet == XmlResourceParser.END_TAG && xpp.getName().equals("Exercise")) {
+                        if (BuildConfig.DEBUG)
+                            Log.v(TAG, "NEW EXERCISE id: " + id + " rleft:"+ r_left+" rright:"+r_right);
+                        // We've got an Exercise :
+                        //String name = ctx.getResources().getString()
+                        try {
+                            if(r_right >= 0)
+                                    exercises.put(id, new DualHandedExercise("toto", bpm, rythms.get(r_right), rythms.get(r_left)));
+                            else exercises.put(id, new Exercise("toto", bpm, rythms.get(r_right)));
+                        } catch (BadExerciseException e) {
+                            if (BuildConfig.DEBUG) Log.v(TAG, "Arg, apparently this is not a valid exercise");
+                            e.printStackTrace();
+                        }
+
+                        //Reset !
+                        id = -1; bpm = -1; r_left = -1; r_right = -1;
+                    }
+
+                    // If not starting a node, we continue parsing without the switch
+                    continue;
+                }
+                switch (xpp.getName()) {
+                    case "Exercises":
+                        if (BuildConfig.DEBUG) Log.v(TAG, "XML EXERCISES");
+                        break;
+                    case "Exercise":
+                        // Getting the signature :
+                        id = Integer.parseInt(xpp.getAttributeValue(null, "id"));
+                        bpm = Integer.parseInt(xpp.getAttributeValue(null, "bpm"));
+
+                        if (BuildConfig.DEBUG)
+                            Log.v(TAG, "XML EXERCISE id: " + id + " bpm:" + bpm);
+                        break;
+                    case "rythm":
+                        String nt = xpp.nextText();
+                        if(r_right >= 0)
+                            r_left = Integer.parseInt(nt);
+                        else r_right = Integer.parseInt(nt);
+
+                        if (BuildConfig.DEBUG) Log.v(TAG, "XML RYTHMID" + nt);
+                        break;
+                }
+            }
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    void loadRythms(Context ctx) {
         if (BuildConfig.DEBUG) Log.v(TAG, "Loading exercises");
 
         //First we parse the Rythms file :
@@ -55,6 +117,8 @@ public class Exercises {
                             if (BuildConfig.DEBUG) Log.v(TAG, "Arg, apparently this is not a valid rythm");
                         }
                     }
+
+                    // If not starting a node, we continue parsing without the switch
                     continue;
                 }
                 switch (xpp.getName()) {
@@ -65,9 +129,9 @@ public class Exercises {
                         // Emptying the intervalles, before reading the notes :
                         intervals = new ArrayList<>();
                         // Getting the signature :
-                        id = xpp.getAttributeIntValue(0, 0);
-                        beats = xpp.getAttributeIntValue(1, 0);
-                        unit = xpp.getAttributeIntValue(2, 0);
+                        id = Integer.parseInt(xpp.getAttributeValue(null, "id"));
+                        beats = Integer.parseInt(xpp.getAttributeValue(null, "beats"));
+                        unit = Integer.parseInt(xpp.getAttributeValue(null, "unit"));
 
                         if (BuildConfig.DEBUG) Log.v(TAG, "XML RYTHM id: "+id+" beats:"+beats+" unit:"+unit);
                         break;
