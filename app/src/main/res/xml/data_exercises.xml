@@ -3,6 +3,18 @@
 <Exercises>
     <Exercise id="0" bpm="96">
         <rythm>0</rythm>
+    </Exercise>
+    <Exercise id="1" bpm="96">
         <rythm>1</rythm>
+    </Exercise>
+    <Exercise id="2" bpm="96">
+        <rythm>0</rythm>
+        <rythm>1</rythm>
+    </Exercise>
+    <Exercise id="3" bpm="96">
+        <rythm>2</rythm>
+    </Exercise>
+    <Exercise id="4" bpm="96">
+        <rythm>2</rythm>
     </Exercise>
 </Exercises>

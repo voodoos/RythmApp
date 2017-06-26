@@ -243,8 +243,8 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         ImageView previousNote = null;
         int i = 0;
 
-        //Displaying signature :
-        LinearLayout sig = (LinearLayout) act.getLayoutInflater().inflate(R.layout.signature, layout, false);
+        //Displaying template_signature :
+        LinearLayout sig = (LinearLayout) act.getLayoutInflater().inflate(R.layout.template_signature, layout, false);
         //TextView vduree = (TextView) act.findViewById(R.id.duree);
         //TextView vunite = (TextView) act.findViewById(R.id.unite);
 
@@ -257,8 +257,8 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
             // Adding one note :
             int n = r.currentAndForward();
 
-            //Creating the Imageview based on the note_template
-            ImageView note = (ImageView) act.getLayoutInflater().inflate(R.layout.note_template, layout, false);
+            //Creating the Imageview based on the template_note
+            ImageView note = (ImageView) act.getLayoutInflater().inflate(R.layout.template_note, layout, false);
 
             // If not the first note, set it's position relatively to the previous one :
             /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
@@ -266,7 +266,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
                 lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
             }
             else {
-                lp.addRule(RelativeLayout.RIGHT_OF, R.id.signature);
+                lp.addRule(RelativeLayout.RIGHT_OF, R.id.template_signature);
             }
             note.setLayoutParams(lp);*/
 

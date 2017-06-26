@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainAct";
 
     protected SharedPreferences prefs;
+    private LinearLayout lv;
+
+    private Exercises exs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +37,19 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // This sets the default value once and for all (not at everylaunch)
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Getting pointer to the list of exercises :
+        lv = (LinearLayout) findViewById(R.id.exercises_list);
+
         // Loading exercises :
-        Exercises exs = Exercises.getInstance();
+        exs = Exercises.getInstance();
         exs.loadExercises(this);
+
+        // Populating !
+        for (Exercise ex: exs.getExercises().values()) {
+            lv.addView(ex.getLayout(this, lv));
+        }
+
+
 
         // Dsplaying the list of rythms :
         ArrayList<Integer> test = new ArrayList<>();

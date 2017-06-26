@@ -30,13 +30,18 @@ public class Exercises {
     private Exercises(){
     }
 
-    public static Exercises getInstance() { return instance; }
+    static Exercises getInstance() { return instance; }
+    HashMap<Integer, Exercise> getExercises() { return exercises; }
 
     void loadExercises(Context ctx) {
         //First we parse the Rythms file :
         loadRythms(ctx);
 
         // Then the exercises file :
+        loadExercisesAux(ctx);
+    }
+
+    private void loadExercisesAux(Context ctx) {
         XmlResourceParser xpp = ctx.getResources().getXml(R.xml.data_exercises);
         try {
             int id = -1, bpm = -1, r_left = -1, r_right = -1;
@@ -50,8 +55,8 @@ public class Exercises {
                         // We've got an Exercise :
                         //String name = ctx.getResources().getString()
                         try {
-                            if(r_right >= 0)
-                                    exercises.put(id, new DualHandedExercise("toto", bpm, rythms.get(r_right), rythms.get(r_left)));
+                            if(r_left >= 0)
+                                exercises.put(id, new DualHandedExercise("toto", bpm, rythms.get(r_right), rythms.get(r_left)));
                             else exercises.put(id, new Exercise("toto", bpm, rythms.get(r_right)));
                         } catch (BadExerciseException e) {
                             if (BuildConfig.DEBUG) Log.v(TAG, "Arg, apparently this is not a valid exercise");
@@ -70,7 +75,7 @@ public class Exercises {
                         if (BuildConfig.DEBUG) Log.v(TAG, "XML EXERCISES");
                         break;
                     case "Exercise":
-                        // Getting the signature :
+                        // Getting the template_signature :
                         id = Integer.parseInt(xpp.getAttributeValue(null, "id"));
                         bpm = Integer.parseInt(xpp.getAttributeValue(null, "bpm"));
 
@@ -93,7 +98,7 @@ public class Exercises {
             e.printStackTrace();
         }
     }
-    void loadRythms(Context ctx) {
+    private void loadRythms(Context ctx) {
         if (BuildConfig.DEBUG) Log.v(TAG, "Loading exercises");
 
         //First we parse the Rythms file :
@@ -128,7 +133,7 @@ public class Exercises {
                     case "Rythm":
                         // Emptying the intervalles, before reading the notes :
                         intervals = new ArrayList<>();
-                        // Getting the signature :
+                        // Getting the template_signature :
                         id = Integer.parseInt(xpp.getAttributeValue(null, "id"));
                         beats = Integer.parseInt(xpp.getAttributeValue(null, "beats"));
                         unit = Integer.parseInt(xpp.getAttributeValue(null, "unit"));

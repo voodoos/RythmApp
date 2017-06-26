@@ -9,4 +9,8 @@
         <note>8</note>
         <note>8</note>
     </Rythm>
+    <Rythm id="2" beats="2" unit="2">
+        <note>2</note>
+        <note>2</note>
+    </Rythm>
 </Rythms>
