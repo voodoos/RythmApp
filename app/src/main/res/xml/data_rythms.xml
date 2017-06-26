@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Rythms>
+    <Rythm id="0" beats="2" unit="4">
+        <note>4</note>
+        <note>4</note>
+    </Rythm>
+    <Rythm id="1" beats="2" unit="4">
+        <note>4</note>
+        <note>8</note>
+        <note>8</note>
+    </Rythm>
+</Rythms>

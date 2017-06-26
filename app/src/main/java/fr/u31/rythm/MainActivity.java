@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // This sets the default value once and for all (not at everylaunch)
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Loading exercises :
+        Exercises exs = Exercises.getInstance();
+        exs.loadExercises(this);
 
         // Dsplaying the list of rythms :
         ArrayList<Integer> test = new ArrayList<>();
