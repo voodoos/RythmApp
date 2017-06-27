@@ -16,9 +16,11 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     private static final String TAG = "AbstractTrainAct";
 
     protected SharedPreferences prefs;
-    private LinearLayout l_left, l_right;
+    private FrameLayout exercise_layout;
     private ProgressBar progressBar;
 
     protected boolean dualHanded;
@@ -54,9 +56,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
         // Which exercise ?
         ex = Exercises.getInstance().getExercise(intent.getIntExtra("exercise", 0));
-
-        // Dual handed mode ?
-        dualHanded = false;
+        dualHanded = ex.isDualHanded();
 
         // We have preferences :
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -68,7 +68,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
 
-        // Enable the Up button
+        // Enable the BACK button
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
@@ -81,14 +81,26 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         //Getting pointer to the progressbar :
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        // Getting pointer to the rythm layout :
-        l_right = (LinearLayout) findViewById(R.id.rl_rythm);
-        rightNotesViews = new ArrayList<>();
-        leftNotesViews = new ArrayList<>();
+        // Getting pointer to the exercise layout :
+        exercise_layout = (FrameLayout) findViewById(R.id.exercise);
 
-        ArrayList<Integer> test = new ArrayList<>();
-        test.add(4);
-        test.add(4);
+        // Drawing the exercise :
+        RelativeLayout rlex = ex.getLayout(this, exercise_layout);
+        rlex.findViewById(R.id.start).setVisibility(View.GONE); // Don't show buttons !
+        exercise_layout.addView(rlex);
+
+        // Dual Handed ? Let's show the tap !
+        if (dualHanded) {
+            if (BuildConfig.DEBUG) Log.v(TAG, "Dualhanded, we show the tap");
+            findViewById(R.id.LeftTap).setVisibility(View.VISIBLE);
+        }
+
+        //rightNotesViews = new ArrayList<>();
+        //leftNotesViews = new ArrayList<>();
+
+       // ArrayList<Integer> test = new ArrayList<>();
+        //test.add(4);
+        //test.add(4);
 
 
         //test.add(4);
@@ -102,7 +114,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         //test.add(8);
         //test.add(16);
         //test.add(8);
-
+/*
         try {
             r_right = new Rythm(new Pair<>(2, 4), test);
             if (dualHanded) {}
@@ -112,9 +124,9 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
             startActivity(intent1);
         }
 
-
-        drawRythm(r_right, rightNotesViews, l_right, this);
-        if (dualHanded) drawRythm(r_left, leftNotesViews, l_left, this);
+*/
+        //drawRythm(r_right, rightNotesViews, l_right, this);
+        //if (dualHanded) drawRythm(r_left, leftNotesViews, l_left, this);
 
         newMetronomes();
     }
@@ -240,7 +252,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
     /**
      * That function draw a Rythm and store notes views in the corresponding NotesViews array
-     */
+     *
     static void drawRythm(Rythm r, ArrayList<ImageView> notesViews, LinearLayout layout, Activity act) {
         r.restart();
         if  (notesViews != null) notesViews.clear();
@@ -273,7 +285,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
             else {
                 lp.addRule(RelativeLayout.RIGHT_OF, R.id.template_signature);
             }
-            note.setLayoutParams(lp);*/
+            note.setLayoutParams(lp);
 
             note.setId(++i);
 
@@ -290,6 +302,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         } while (!r.isFirst());
         r.restart();
     }
+*/
 
     /**
      * Red note.

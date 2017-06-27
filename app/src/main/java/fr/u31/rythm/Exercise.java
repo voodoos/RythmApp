@@ -37,6 +37,8 @@ public class Exercise {
 
     int getId() { return id; }
 
+    boolean isDualHanded() { return false; }
+
     RelativeLayout getLayout(Activity act, ViewGroup root) {
         if (BuildConfig.DEBUG) Log.v(TAG, "ExGetLayout");
 
