@@ -9,10 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -45,36 +47,21 @@ public class MainActivity extends AppCompatActivity {
         exs.loadExercises(this);
 
         // Populating !
-        for (Exercise ex: exs.getExercises().values()) {
-            lv.addView(ex.getLayout(this, lv));
+        for (final Exercise ex: exs.getExercises().values()) {
+            RelativeLayout exl = ex.getLayout(this, lv);
+
+            // Linking the Start button
+            exl.findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (BuildConfig.DEBUG) Log.v(TAG, "Click");
+
+                    start(ex.getId());
+                }
+            });
+
+            lv.addView(exl);
         }
 
-
-
-        // Dsplaying the list of rythms :
-        ArrayList<Integer> test = new ArrayList<>();
-        //test.add(4);
-        //test.add(4);
-
-
-        test.add(4);
-        test.add(8);
-
-        test.add(8);
-
-        //test.add(4);
-        //test.add(16);
-        //test.add(8);
-        //test.add(8);
-        //test.add(16);
-        //test.add(8);
-
-        try {
-            AbstractTrainActivity.drawRythm(new Rythm(new Pair<>(2, 4), test),null, (LinearLayout) findViewById(R.id.part1), this);
-        } catch (BadRythmException e) {
-            e.printStackTrace();
-            if (BuildConfig.DEBUG) Log.v(TAG, "Arg bad rythm.");
-        }
 
     }
     // Menu icons are inflated just as they were with actionbar
@@ -85,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void start(View v) {
+    private void start(final int exid) {
         Intent intent;
 
         if(prefs.getBoolean("pref_rythm", false))
             intent = new Intent(this, TrainActivity.class);
         else intent = new Intent(this, HumanTrainActivity.class);
 
-        intent.putExtra("dualHanded", false);
+        intent.putExtra("exercise", exid);
         startActivity(intent);
     }
 }

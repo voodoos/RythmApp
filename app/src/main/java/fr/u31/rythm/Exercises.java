@@ -33,6 +33,8 @@ public class Exercises {
     static Exercises getInstance() { return instance; }
     HashMap<Integer, Exercise> getExercises() { return exercises; }
 
+    Exercise getExercise(int id) { return exercises.get(id); }
+
     void loadExercises(Context ctx) {
         //First we parse the Rythms file :
         loadRythms(ctx);
@@ -56,8 +58,8 @@ public class Exercises {
                         //String name = ctx.getResources().getString()
                         try {
                             if(r_left >= 0)
-                                exercises.put(id, new DualHandedExercise("toto", bpm, rythms.get(r_right), rythms.get(r_left)));
-                            else exercises.put(id, new Exercise("toto", bpm, rythms.get(r_right)));
+                                exercises.put(id, new DualHandedExercise(id, "toto", bpm, rythms.get(r_right), rythms.get(r_left)));
+                            else exercises.put(id, new Exercise(id, "toto", bpm, rythms.get(r_right)));
                         } catch (BadExerciseException e) {
                             if (BuildConfig.DEBUG) Log.v(TAG, "Arg, apparently this is not a valid exercise");
                             e.printStackTrace();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -15,8 +16,8 @@ public class DualHandedExercise extends Exercise {
 
     private Rythm r_left;
 
-    DualHandedExercise(String name, int bpm, Rythm r_right, Rythm r_left) throws BadExerciseException {
-        super(name, bpm, r_right);
+    DualHandedExercise(int id, String name, int bpm, Rythm r_right, Rythm r_left) throws BadExerciseException {
+        super(id, name, bpm, r_right);
 
         // Checking that Rythms' signatures are coherent :
         if((r_left.getBeats() != r_right.getBeats()) || (r_left.getUnit() != r_right.getUnit()))
@@ -29,10 +30,10 @@ public class DualHandedExercise extends Exercise {
         return r_left;
     }
 
-    LinearLayout getLayout(Activity act, ViewGroup root) {
+    RelativeLayout getLayout(Activity act, ViewGroup root) {
         if (BuildConfig.DEBUG) Log.v(TAG, "DHEx GetLayout");
 
-        LinearLayout lin = super.getLayout(act, root);
+        RelativeLayout lin = super.getLayout(act, root);
 
         //Getting rythm container :
         LinearLayout rc = lin.findViewById(R.id.rythm_container);

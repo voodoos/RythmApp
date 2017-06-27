@@ -37,6 +37,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
     protected Score score;
     protected AbstractMetronome m_left, m_right;
+    protected Exercise ex;
     protected Rythm r_left, r_right;
     protected ArrayList<ImageView> rightNotesViews, leftNotesViews;
 
@@ -50,8 +51,12 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
         // The intent (used to get parameters from parent view) :
         Intent intent = getIntent();
+
+        // Which exercise ?
+        ex = Exercises.getInstance().getExercise(intent.getIntExtra("exercise", 0));
+
         // Dual handed mode ?
-        dualHanded = intent.getBooleanExtra("dualHanded", false);
+        dualHanded = false;
 
         // We have preferences :
         prefs = PreferenceManager.getDefaultSharedPreferences(this);

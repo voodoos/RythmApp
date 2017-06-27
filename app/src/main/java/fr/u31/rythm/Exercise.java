@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.Serializable;
 
 /**
  * Created by ulysse on 26/06/2017.
@@ -16,10 +19,11 @@ public class Exercise {
     private static final String TAG = "Exercise";
 
     private String name;
-    private int bpm, beats, unit;
+    private int id, bpm, beats, unit;
     private Rythm r_right;
 
-    Exercise(String name, int bpm, Rythm r) {
+    Exercise(int id, String name, int bpm, Rythm r) {
+        this.id = id;
         this.name = name;
         this.bpm = bpm;
         this.beats = r.getBeats();
@@ -31,10 +35,12 @@ public class Exercise {
         return r_right;
     }
 
-    LinearLayout getLayout(Activity act, ViewGroup root) {
+    int getId() { return id; }
+
+    RelativeLayout getLayout(Activity act, ViewGroup root) {
         if (BuildConfig.DEBUG) Log.v(TAG, "ExGetLayout");
 
-        LinearLayout lin = (LinearLayout) act.getLayoutInflater().inflate(R.layout.template_exercise, root, false);
+        RelativeLayout lin = (RelativeLayout) act.getLayoutInflater().inflate(R.layout.template_exercise, root, false);
 
         // Setting signature :
         LinearLayout sig =  lin.findViewById(R.id.signature);//(LinearLayout) lin.getChildAt(0);
