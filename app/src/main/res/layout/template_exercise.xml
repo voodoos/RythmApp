@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exercise_container"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/roundborder"
     android:gravity="left|center_vertical"
     android:orientation="horizontal">
 
@@ -12,6 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
@@ -20,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
+            android:gravity="center_vertical"
             android:text="4"
             android:textColor="@android:color/black"
             android:textSize="36sp" />
@@ -29,8 +35,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
+            android:gravity="center_vertical"
             android:text="4"
             android:textColor="@android:color/black"
             android:textSize="36sp" />
     </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/rythm_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/rythm_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
 </LinearLayout>

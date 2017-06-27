@@ -1,5 +1,11 @@
 package fr.u31.rythm;
 
+import android.app.Activity;
+import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 /**
  * Created by ulysse on 26/06/2017.
  */
@@ -21,5 +27,21 @@ public class DualHandedExercise extends Exercise {
 
     Rythm getLeftRythm() {
         return r_left;
+    }
+
+    LinearLayout getLayout(Activity act, ViewGroup root) {
+        if (BuildConfig.DEBUG) Log.v(TAG, "DHEx GetLayout");
+
+        LinearLayout lin = super.getLayout(act, root);
+
+        //Getting rythm container :
+        LinearLayout rc = lin.findViewById(R.id.rythm_container);
+
+        // Getting first Rythm :
+        LinearLayout rleft = r_left.getLayout(act, rc);
+
+        rc.addView(rleft);
+
+        return lin;
     }
 }

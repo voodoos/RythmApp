@@ -1,7 +1,12 @@
 package fr.u31.rythm;
 
+import android.app.Activity;
 import android.util.Log;
 import android.util.Pair;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -95,5 +100,47 @@ class Rythm {
         if (BuildConfig.DEBUG) Log.v(TAG, String.valueOf((double)sig.first / (double)sig.second));
 
         if ( !((double)sig.first / (double)sig.second == sum))  throw new BadRythmException();
+    }
+
+    LinearLayout getLayout(Activity act, ViewGroup root) {
+        LinearLayout lin = (LinearLayout) act.getLayoutInflater().inflate(R.layout.template_rythm, root, false);
+
+        // Adding notes :
+        int idx = index, i = 0;
+        restart();
+        do {
+            // Adding one note :
+            int n = currentAndForward();
+
+            //Creating the Imageview based on the template_note
+            ImageView note = (ImageView) act.getLayoutInflater().inflate(R.layout.template_note, lin, false);
+
+            // If not the first note, set it's position relatively to the previous one :
+            /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
+            if (previousNote != null) {
+                lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
+            }
+            else {
+                lp.addRule(RelativeLayout.RIGHT_OF, R.id.template_signature);
+            }
+            note.setLayoutParams(lp);*/
+
+            note.setId(++i);
+
+            if(n == 1) note.setImageResource(R.drawable.ic_ronde);
+            else if(n == 2) note.setImageResource(R.drawable.ic_blanche);
+            else if(n == 4) note.setImageResource(R.drawable.ic_noire);
+            else if (n == 8) note.setImageResource(R.drawable.ic_croche);
+            else if (n == 16) note.setImageResource(R.drawable.ic_double_croche);
+            else if (n == 32) note.setImageResource(R.drawable.ic_triple_croche);
+
+            if (BuildConfig.DEBUG) Log.v(TAG, "Rlayout: "+String.valueOf(n));
+            lin.addView(note);
+            //previousNote = note;
+            //if(notesViews != null) notesViews.add(note);
+        } while (!isFirst());
+        index = idx;
+
+        return lin;
     }
 }

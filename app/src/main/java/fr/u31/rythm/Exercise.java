@@ -2,6 +2,7 @@ package fr.u31.rythm;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -31,12 +32,22 @@ public class Exercise {
     }
 
     LinearLayout getLayout(Activity act, ViewGroup root) {
+        if (BuildConfig.DEBUG) Log.v(TAG, "ExGetLayout");
+
         LinearLayout lin = (LinearLayout) act.getLayoutInflater().inflate(R.layout.template_exercise, root, false);
 
         // Setting signature :
-        LinearLayout sig = (LinearLayout) lin.getChildAt(0);
+        LinearLayout sig =  lin.findViewById(R.id.signature);//(LinearLayout) lin.getChildAt(0);
         ((TextView) sig.getChildAt(0)).setText(String.valueOf(beats));
         ((TextView) sig.getChildAt(1)).setText(String.valueOf(unit));
+
+        //Getting rythm container :
+        LinearLayout rc = lin.findViewById(R.id.rythm_container);
+
+        // Getting first Rythm :
+        LinearLayout rright = r_right.getLayout(act, rc);
+
+        rc.addView(rright);
 
         return lin;
     }
