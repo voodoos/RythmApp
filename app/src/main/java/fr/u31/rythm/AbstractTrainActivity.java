@@ -251,73 +251,26 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     }
 
     /**
-     * That function draw a Rythm and store notes views in the corresponding NotesViews array
-     *
-    static void drawRythm(Rythm r, ArrayList<ImageView> notesViews, LinearLayout layout, Activity act) {
-        r.restart();
-        if  (notesViews != null) notesViews.clear();
-
-        ImageView previousNote = null;
-        int i = 0;
-
-        //Displaying template_signature :
-        LinearLayout sig = (LinearLayout) act.getLayoutInflater().inflate(R.layout.template_signature, layout, false);
-        //TextView vduree = (TextView) act.findViewById(R.id.duree);
-        //TextView vunite = (TextView) act.findViewById(R.id.unite);
-
-        ((TextView) sig.getChildAt(0)).setText(String.valueOf(r.getBeats()));
-        ((TextView) sig.getChildAt(1)).setText(String.valueOf(r.getUnit()));
-
-        layout.addView(sig); // Attaching sig to its root
-
-        do {
-            // Adding one note :
-            int n = r.currentAndForward();
-
-            //Creating the Imageview based on the template_note
-            ImageView note = (ImageView) act.getLayoutInflater().inflate(R.layout.template_note, layout, false);
-
-            // If not the first note, set it's position relatively to the previous one :
-            /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();
-            if (previousNote != null) {
-                lp.addRule(RelativeLayout.RIGHT_OF, previousNote.getId());
-            }
-            else {
-                lp.addRule(RelativeLayout.RIGHT_OF, R.id.template_signature);
-            }
-            note.setLayoutParams(lp);
-
-            note.setId(++i);
-
-            if(n == 1) note.setImageResource(R.drawable.ic_ronde);
-            else if(n == 2) note.setImageResource(R.drawable.ic_blanche);
-            else if(n == 4) note.setImageResource(R.drawable.ic_noire);
-            else if (n == 8) note.setImageResource(R.drawable.ic_croche);
-            else if (n == 16) note.setImageResource(R.drawable.ic_double_croche);
-            else if (n == 32) note.setImageResource(R.drawable.ic_triple_croche);
-
-            layout.addView(note);
-            previousNote = note;
-            if(notesViews != null) notesViews.add(note);
-        } while (!r.isFirst());
-        r.restart();
-    }
-*/
-
-    /**
      * Red note.
      *
      * @param id the id
      */
     public void redNote(int id) {
+        boolean right = true;
+        LinearLayout notesContainer;
+        if(right)
+            notesContainer = (LinearLayout) ((LinearLayout) exercise_layout.findViewById(R.id.rythm_container)).getChildAt(0);
+        else
+            notesContainer = (LinearLayout) ((LinearLayout) exercise_layout.findViewById(R.id.rythm_container)).getChildAt(1);
+
         //Resetting all notes to black :
-        for (ImageView i: rightNotesViews) {
-            setViewNoteColor(i, Color.parseColor("#000000"));
+        for (int i = 0; i < notesContainer.getChildCount(); i++) {
+            setViewNoteColor((ImageView) notesContainer.getChildAt(i), Color.parseColor("#000000"));
         }
 
         // Actual note in red :
-        if (BuildConfig.DEBUG) Log.v(TAG, "id: " + id + "Viewid: " + rightNotesViews.get(id));
-        setViewNoteColor(rightNotesViews.get(id), Color.parseColor("#D41C1C"));
+        if (BuildConfig.DEBUG) Log.v(TAG, "id: " + id + "Noteid: " + id);
+        setViewNoteColor((ImageView) notesContainer.getChildAt(id), Color.parseColor("#D41C1C"));
     }
 
     /* onCLick actions */

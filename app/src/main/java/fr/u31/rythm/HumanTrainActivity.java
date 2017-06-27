@@ -8,8 +8,8 @@ public class HumanTrainActivity extends AbstractTrainActivity {
     private static final String TAG = "HumanTrainAct";
     @Override
     protected void newMetronomes() {
-        m_right = new HumanMetronome(r_right, this);
-        if(dualHanded) m_left = new HumanMetronome(r_left, this);
+        m_right = new HumanMetronome(ex.getRightRythm(), this);
+        if(dualHanded) m_left = new HumanMetronome(((DualHandedExercise) ex).getLeftRythm(), this);
     }
 
     @Override
