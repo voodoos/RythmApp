@@ -9,4 +9,5 @@
 
     <!-- Exercises names -->
     <string name="ex_0"></string>
+    <string name="action_tune">Tune</string>
 </resources>
