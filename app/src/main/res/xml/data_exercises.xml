@@ -17,4 +17,7 @@
     <Exercise id="4" bpm="96">
         <rythm>2</rythm>
     </Exercise>
+    <Exercise id="5" bpm="96">
+        <rythm>3</rythm>
+    </Exercise>
 </Exercises>

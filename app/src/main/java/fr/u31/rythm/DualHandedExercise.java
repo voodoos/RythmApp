@@ -33,6 +33,12 @@ public class DualHandedExercise extends Exercise {
     @Override
     boolean isDualHanded() { return true; }
 
+    @Override
+    void reset() {
+        super.reset();
+        r_left.restart();
+    }
+
     RelativeLayout getLayout(Activity act, ViewGroup root) {
         if (BuildConfig.DEBUG) Log.v(TAG, "DHEx GetLayout");
 

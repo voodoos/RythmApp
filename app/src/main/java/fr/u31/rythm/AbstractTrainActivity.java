@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -56,6 +58,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
         // Which exercise ?
         ex = Exercises.getInstance().getExercise(intent.getIntExtra("exercise", 0));
+        ex.reset();
         dualHanded = ex.isDualHanded();
 
         // We have preferences :
@@ -95,43 +98,17 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
             findViewById(R.id.LeftTap).setVisibility(View.VISIBLE);
         }
 
-        //rightNotesViews = new ArrayList<>();
-        //leftNotesViews = new ArrayList<>();
-
-       // ArrayList<Integer> test = new ArrayList<>();
-        //test.add(4);
-        //test.add(4);
-
-
-        //test.add(4);
-        //test.add(8);
-
-        //test.add(8);
-
-        //test.add(4);
-        //test.add(16);
-        //test.add(8);
-        //test.add(8);
-        //test.add(16);
-        //test.add(8);
-/*
-        try {
-            r_right = new Rythm(new Pair<>(2, 4), test);
-            if (dualHanded) {}
-        } catch (BadRythmException e) {
-            e.printStackTrace();
-            Intent intent1 = new Intent(this, MainActivity.class);
-            startActivity(intent1);
-        }
-
-*/
-        //drawRythm(r_right, rightNotesViews, l_right, this);
-        //if (dualHanded) drawRythm(r_left, leftNotesViews, l_left, this);
-
+        // Starting the metronomes (metronomes are more than metronomes, they are the time keepers)
         newMetronomes();
     }
 
+    @Override
+    protected void onPause() {
+        if (BuildConfig.DEBUG) Log.v(TAG, "TrainAct pausing");
+        super.onPause();
+    }
 
+    @Override
     protected void onDestroy(){
         if (BuildConfig.DEBUG) Log.v(TAG, "TrainAct destroying");
         destroyMetronomes();
@@ -257,20 +234,37 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
      */
     public void redNote(int id) {
         boolean right = true;
+
+        // Getting the scroller to center played note:
+        HorizontalScrollView hsv = exercise_layout.findViewById(R.id.rythm_scroll);
+
+        int noteNbr;
+
         LinearLayout notesContainer;
-        if(right)
-            notesContainer = (LinearLayout) ((LinearLayout) exercise_layout.findViewById(R.id.rythm_container)).getChildAt(0);
-        else
-            notesContainer = (LinearLayout) ((LinearLayout) exercise_layout.findViewById(R.id.rythm_container)).getChildAt(1);
+        LinearLayout rContainer = (LinearLayout) exercise_layout.findViewById(R.id.rythm_container);
+
+        if(right) {
+            notesContainer = (LinearLayout) rContainer.getChildAt(0);
+        }
+        else {
+            notesContainer = (LinearLayout) rContainer.getChildAt(1);
+        }
+
+        noteNbr = notesContainer.getChildCount();
 
         //Resetting all notes to black :
-        for (int i = 0; i < notesContainer.getChildCount(); i++) {
+        for (int i = 0; i < noteNbr; i++) {
             setViewNoteColor((ImageView) notesContainer.getChildAt(i), Color.parseColor("#000000"));
         }
 
         // Actual note in red :
         if (BuildConfig.DEBUG) Log.v(TAG, "id: " + id + "Noteid: " + id);
         setViewNoteColor((ImageView) notesContainer.getChildAt(id), Color.parseColor("#D41C1C"));
+
+        Rect rect = new Rect();
+        notesContainer.getChildAt(id).getGlobalVisibleRect(rect);
+
+        hsv.smoothScrollTo((int) (((double) id / (double) noteNbr) * (double) hsv.getMaxScrollAmount ()), 0);
     }
 
     /* onCLick actions */

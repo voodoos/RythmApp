@@ -13,4 +13,15 @@
         <note>2</note>
         <note>2</note>
     </Rythm>
+    <Rythm id="3" beats="4" unit="4">
+        <note>4</note>
+        <note>8</note>
+        <note>8</note>
+        <note>8</note>
+        <note>8</note>
+        <note>16</note>
+        <note>16</note>
+        <note>16</note>
+        <note>16</note>
+    </Rythm>
 </Rythms>

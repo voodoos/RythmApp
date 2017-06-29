@@ -26,6 +26,11 @@ public class HumanTrainActivity extends AbstractTrainActivity {
             setViewCounter(scd.message);
             moveProgress(scd.progres);
         }
-        else if(dualHanded) m_left.tick();
+        else if(dualHanded) {
+            // Tick return the delta, score evaluates it
+            Score.scdata scd = score.evaluate(m_left.tick());
+            setViewCounter(scd.message);
+            moveProgress(scd.progres);
+        }
     }
 }

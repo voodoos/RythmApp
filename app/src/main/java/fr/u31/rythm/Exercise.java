@@ -39,6 +39,10 @@ public class Exercise {
 
     boolean isDualHanded() { return false; }
 
+    void reset() {
+        r_right.restart();
+    }
+
     RelativeLayout getLayout(Activity act, ViewGroup root) {
         if (BuildConfig.DEBUG) Log.v(TAG, "ExGetLayout");
 
