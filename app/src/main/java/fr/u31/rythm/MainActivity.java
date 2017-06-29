@@ -59,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
         for (final Exercise ex: exs.getExercises().values()) {
             RelativeLayout exl = ex.getLayout(this, lv);
 
+            // Linking the Ear button
+            exl.findViewById(R.id.ear).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (BuildConfig.DEBUG) Log.v(TAG, "Click Ear");
+
+                    //start(ex.getId());
+                }
+            });
+
             // Linking the Start button
             exl.findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

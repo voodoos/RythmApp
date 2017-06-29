@@ -61,25 +61,26 @@
 
     <ImageButton
         android:id="@+id/ear"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
         android:layout_toLeftOf="@+id/start"
         android:layout_toStartOf="@+id/start"
         android:background="@android:color/transparent"
+        android:contentDescription="Listen to the rythm"
         android:scaleType="fitCenter"
-        android:layout_centerInParent="true"
-        app:srcCompat="@drawable/ic_hearing_black_24dp"
-        android:contentDescription="Listen to the rythm" />
+        app:srcCompat="@drawable/ic_ear" />
+
     <ImageButton
         android:id="@+id/start"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="50dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
+        android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        app:srcCompat="@drawable/ic_play_circle_outline_black_24dp"
-        android:contentDescription="Play" />
+        android:background="@android:color/transparent"
+        android:contentDescription="Play"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_play_circle_outline_black_24dp" />
 
 </RelativeLayout>
