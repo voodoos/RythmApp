@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainAct";
 
+    protected Toolbar myToolbar;
     protected SharedPreferences prefs;
     private LinearLayout lv;
 
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
         // We have preferences :
@@ -76,6 +78,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        final MenuItem mi = menu.findItem(R.id.action_tune);
+        ImageView v = (ImageView) mi.getActionView();
+
+        if(v != null) {
+            v.setImageResource(R.drawable.ic_tune_black_24dp);
+
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onOptionsItemSelected(mi);
+                }
+            });
+        }
         return true;
     }
 
@@ -84,12 +101,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_tune:
+                ImageView v = (ImageView) item.getActionView();
+
                 // We show the difficulty setting if they're not, else wehide them :
                 if(settings) {
+                    if(v != null) {
+                        Animation rot = AnimationUtils.loadAnimation(this, R.anim.rotate_settings_in);
+                        rot.setFillAfter(true);
+                        v.startAnimation(rot);
+                    }
                     Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_out);
                     findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
                     settings = false;
                 } else {
+                    if(v != null) {
+                        Animation rot = AnimationUtils.loadAnimation(this, R.anim.rotate_settings_out);
+                        rot.setFillAfter(true);
+                        v.startAnimation(rot);
+                    }
                     Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_in);
                     anim.setFillAfter(true);
                     findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
