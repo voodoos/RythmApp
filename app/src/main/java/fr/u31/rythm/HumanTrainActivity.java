@@ -20,17 +20,26 @@ public class HumanTrainActivity extends AbstractTrainActivity {
 
     @Override
     protected void tapAction(boolean right) {
+        Score.scdata scd = null;
+
         if (right) {
             // Tick return the delta, score evaluates it
-            Score.scdata scd = score.evaluate(m_right.tick());
-            setViewCounter(scd.message);
-            moveProgress(scd.progres);
+            scd = score.evaluate(m_right.tick());
         }
         else if(dualHanded) {
             // Tick return the delta, score evaluates it
-            Score.scdata scd = score.evaluate(m_left.tick());
+            scd = score.evaluate(m_left.tick());
+        }
+
+        if(scd != null) {
             setViewCounter(scd.message);
             moveProgress(scd.progres);
+
+            resetLateEarly();
+            if(scd.lateness > 0)
+                setLate(Math.abs(scd.lateness));
+            else
+                setEarly(Math.abs(scd.lateness));
         }
     }
 }

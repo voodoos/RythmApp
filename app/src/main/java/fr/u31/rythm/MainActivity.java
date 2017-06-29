@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_tune:
+                // We show the difficulty setting if they're not, else wehide them :
                 if(settings) {
                     Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_out);
                     findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
@@ -98,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
+                return true;
+
+
+            case R.id.home:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                this.finish();
                 return true;
 
             default:

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -90,6 +91,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         // Drawing the exercise :
         RelativeLayout rlex = ex.getLayout(this, exercise_layout);
         rlex.findViewById(R.id.start).setVisibility(View.GONE); // Don't show buttons !
+        rlex.findViewById(R.id.ear).setVisibility(View.GONE); // Don't show buttons !
         exercise_layout.addView(rlex);
 
         // Dual Handed ? Let's show the tap !
@@ -160,8 +162,9 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
             @Override
             public void run() {
                 ((TextView)findViewById(R.id.early)).setText("");
-                if(i > 1) ((TextView)findViewById(R.id.late)).setText("<<");
-                else ((TextView)findViewById(R.id.late)).setText("<");
+                if(i > 2) ((TextView)findViewById(R.id.late)).setText(">>>");
+                else if(i > 1) ((TextView)findViewById(R.id.late)).setText(">>");
+                else if(i > 0) ((TextView)findViewById(R.id.late)).setText(">");
             }
         });
     }
@@ -176,8 +179,9 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
             @Override
             public void run() {
                 ((TextView)findViewById(R.id.late)).setText("");
-                if(i > 1) ((TextView)findViewById(R.id.early)).setText(">>");
-                else ((TextView)findViewById(R.id.early)).setText(">");
+                if(i > 2) ((TextView)findViewById(R.id.early)).setText("<<<");
+                else if(i > 1) ((TextView)findViewById(R.id.early)).setText("<<");
+                else if(i > 0) ((TextView)findViewById(R.id.early)).setText("<");
             }
         });
     }

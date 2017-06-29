@@ -30,11 +30,11 @@ enum Difficulty {
     public int getValue() {
         return value;
     } };
-enum Lateness {VERY_EARLY, EARLY, ALLRIGHT, LATE, VERY_LATE}
+//enum Lateness {VERY_EARLY, EARLY, ALLRIGHT, LATE, VERY_LATE}
 
 public class Score {
     private static final String TAG = "Score";
-    class scdata { public String message; public double progres; public Lateness lateness; }
+    class scdata { public String message; public double progres; public int lateness; }
 
     int[] p, g, b;
     Difficulty d;
@@ -54,9 +54,9 @@ public class Score {
 
         String message;
         double progress;
-        Lateness lateness = Lateness.ALLRIGHT;
+        int lateness = 0;
 
-        boolean late = delta > 0;
+        boolean late = delta < 0;
         delta = Math.abs(delta);
 
         if (delta < p[d.getValue()]) {
@@ -66,19 +66,18 @@ public class Score {
         else if (delta < g[d.getValue()]) {
             message = "GOOD";
             progress = 10;
-            if (late) lateness = Lateness.LATE;
-            if (!late) lateness = Lateness.EARLY;
+            lateness = 1;
         } else if (delta < b[d.getValue()]) {
             message =" BOF";
             progress = 5;
-            if (late) lateness = Lateness.LATE;
-            if (!late) lateness = Lateness.EARLY;
+            lateness = 2;
         } else {
             message = "BAD";
             progress = -10;
-            if (late) lateness = Lateness.VERY_LATE;
-            if (!late) lateness = Lateness.VERY_EARLY;
+            lateness = 3;
         }
+
+        if (!late) lateness *= -1;
 
         scdata scd = new scdata();
         scd.message = message;
