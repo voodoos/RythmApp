@@ -1,5 +1,7 @@
 package fr.u31.rythm;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -7,6 +9,8 @@ import java.util.ArrayList;
  */
 
 class Average {
+    private static final String TAG = "Average";
+
     private ArrayList<Double> samples;
     private int index = 0;
     private int nbrOfSamples = 0;
@@ -28,7 +32,7 @@ class Average {
         if(index == maxSamples - 1) index = 0;
         else {
             index++;
-            nbrOfSamples = Math.max(nbrOfSamples, index + 1);
+            nbrOfSamples = Math.min(nbrOfSamples + 1, maxSamples);
         }
     }
 
@@ -37,6 +41,7 @@ class Average {
         for (double s: samples) {
             sum += s;
         }
+        if (BuildConfig.DEBUG) Log.v(TAG, "Sum : "+sum+" NbrSamples : "+nbrOfSamples);
         return sum / nbrOfSamples;
     }
 }

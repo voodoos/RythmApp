@@ -34,16 +34,15 @@ public class HumanMetronome extends AbstractMetronome {
         double ret = 0;
         long tapTime = System.currentTimeMillis();
 
-        double tempo = 0;
+        double tempo;
         if(previousTime != 0 && previousNote != 0) {
             long delta = tapTime - previousTime;
             tempo = delta*previousNote;
 
             if(previousTempo.getNbrOfSamples() > 0) {
                 double deltaTempo = tempo - previousTempo.getAverage();
-                int progress;
 
-                if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Delta : " + deltaTempo);
+                if (BuildConfig.DEBUG) Log.v(TAG, "Tempo : " + tempo + "Avg tempo : "+ previousTempo.getAverage() + "Delta : " + deltaTempo);
 
 
                 ret = deltaTempo;

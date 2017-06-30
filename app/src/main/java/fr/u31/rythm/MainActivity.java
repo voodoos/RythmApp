@@ -154,6 +154,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param ev
+     * @return
+     *
+     *  Intercepting touch events to analyse which ones are outside of the setitng menu and appbar.
+     *  If setting menu is open and touch event is outside, closing the setting menu.
+     *
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Rect viewRect = new Rect(), barRect = new Rect();
