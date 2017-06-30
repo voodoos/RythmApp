@@ -71,7 +71,7 @@
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_ear" />
 
-
+    <!-- TODO Ripples vor older versions ? -->
     <ImageButton
         android:id="@+id/start"
         style="@style/Widget.AppCompat.ImageButton"

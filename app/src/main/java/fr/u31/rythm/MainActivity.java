@@ -3,6 +3,7 @@ package fr.u31.rythm;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     protected Toolbar myToolbar;
     protected SharedPreferences prefs;
+
+    private FrameLayout settings_fragment = null;
+    private ImageView tune_setting_button_action_view = null;
     private LinearLayout lv;
 
     private Exercises exs;
@@ -48,30 +53,20 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // This sets the default value once and for all (not at everylaunch)
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        settings_fragment = findViewById(R.id.settingsFragmentFrame);
+
         // Getting pointer to the list of exercises :
         lv = findViewById(R.id.exercises_list);
 
         final MainActivity that = this;
 
         // We want settings to close when touching outside of them
-        // TODO : Not working properly for now
+        // Done : Not working properly for now
         lv.setOnTouchListener(new View.OnTouchListener(){
             public boolean onTouch(View v, MotionEvent me) {
                 if (BuildConfig.DEBUG) Log.v(TAG, "Touch list");
 
-                if(settings) {
-                    final MenuItem mi = myToolbar.getMenu().findItem(R.id.action_tune);
-                    ImageView v2 = (ImageView) mi.getActionView();
-                    if(v2 != null) {
-                        Animation rot = AnimationUtils.loadAnimation(that, R.anim.rotate_settings_in);
-                        rot.setFillAfter(true);
-                        v2.startAnimation(rot);
-                    }
-                    Animation anim = AnimationUtils.loadAnimation(that, R.anim.setings_out);
-                    findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
-                    settings = false;
-                    return true;
-                }
+                hideSettings();
                 return false;
             }
         });
@@ -114,13 +109,13 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         final MenuItem mi = menu.findItem(R.id.action_tune);
-        ImageView v = (ImageView) mi.getActionView();
+        tune_setting_button_action_view = (ImageView) mi.getActionView();
 
-        if(v != null) {
-            v.setImageResource(R.drawable.ic_tune_black_24dp);
+        if(tune_setting_button_action_view != null) {
+            tune_setting_button_action_view.setImageResource(R.drawable.ic_tune_black_24dp);
 
 
-            v.setOnClickListener(new View.OnClickListener() {
+            tune_setting_button_action_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onOptionsItemSelected(mi);
@@ -135,29 +130,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_tune:
-                ImageView v = (ImageView) item.getActionView();
-
                 // We show the difficulty setting if they're not, else wehide them :
-                if(settings) {
-                    if(v != null) {
-                        Animation rot = AnimationUtils.loadAnimation(this, R.anim.rotate_settings_in);
-                        rot.setFillAfter(true);
-                        v.startAnimation(rot);
-                    }
-                    Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_out);
-                    findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
-                    settings = false;
-                } else {
-                    if(v != null) {
-                        Animation rot = AnimationUtils.loadAnimation(this, R.anim.rotate_settings_out);
-                        rot.setFillAfter(true);
-                        v.startAnimation(rot);
-                    }
-                    Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_in);
-                    anim.setFillAfter(true);
-                    findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
-                    settings = true;
-                }
+                hideShowSettings();
                 return true;
 
             case R.id.action_settings:
@@ -177,6 +151,51 @@ public class MainActivity extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Rect viewRect = new Rect(), barRect = new Rect();
+        settings_fragment.getGlobalVisibleRect(viewRect);
+        myToolbar.getGlobalVisibleRect(barRect);
+        if (!viewRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+            if (!barRect.contains((int) ev.getRawX(), (int) ev.getRawY()))
+            hideSettings();
+        }
+        super.dispatchTouchEvent(ev);
+        return true;
+    }
+
+    private void hideShowSettings() {
+        if(!settings) showSettings();
+        else hideSettings();
+    }
+
+    private void showSettings() {
+        if(!settings) {
+            if(tune_setting_button_action_view != null) {
+                Animation rot = AnimationUtils.loadAnimation(this, R.anim.rotate_settings_out);
+                rot.setFillAfter(true);
+                tune_setting_button_action_view.startAnimation(rot);
+            }
+            Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_in);
+            anim.setFillAfter(true);
+            settings_fragment.startAnimation(anim);
+            settings = true;
+        }
+    }
+
+    private void hideSettings() {
+        if(settings) {
+            if(tune_setting_button_action_view != null) {
+                Animation rot = AnimationUtils.loadAnimation(this, R.anim.rotate_settings_in);
+                rot.setFillAfter(true);
+                tune_setting_button_action_view.startAnimation(rot);
+            }
+            Animation anim = AnimationUtils.loadAnimation(this, R.anim.setings_out);
+            settings_fragment.startAnimation(anim);
+            settings = false;
         }
     }
 
