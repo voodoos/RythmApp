@@ -1,5 +1,11 @@
 package fr.u31.rythm;
 
+import android.graphics.Color;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
+
 /**
  * Created by thevo on 17/06/2017.
  */
@@ -40,6 +46,20 @@ public class HumanTrainActivity extends AbstractTrainActivity {
                 setLate(Math.abs(scd.lateness));
             else
                 setEarly(Math.abs(scd.lateness));
+        }
+
+        if(getProgress() >= 100) {
+            KonfettiView kv = findViewById(R.id.viewKonfetti);
+            kv.build()
+                    .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                    .setDirection(0.0, 359.0)
+                    .setSpeed(1f, 5f)
+                    .setFadeOutEnabled(true)
+                    .setTimeToLive(2000L)
+                    .addShapes(Shape.RECT, Shape.CIRCLE)
+                    .addSizes(new Size(12, 12f))
+                    .setPosition(-50f, kv.getWidth() + 50f, -50f, -50f)
+                    .stream(300, 5000L);
         }
     }
 }

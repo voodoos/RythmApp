@@ -233,6 +233,10 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         });
     }
 
+    public int getProgress() {
+        return progressBar.getProgress();
+    }
+
     /**
      * Red note.
      *
