@@ -71,14 +71,16 @@
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_ear" />
 
+
     <ImageButton
         android:id="@+id/start"
+        style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
+        android:background="@drawable/ripplestart"
         android:contentDescription="Play"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_play_circle_outline_black_24dp" />

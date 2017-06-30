@@ -49,7 +49,32 @@ public class MainActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Getting pointer to the list of exercises :
-        lv = (LinearLayout) findViewById(R.id.exercises_list);
+        lv = findViewById(R.id.exercises_list);
+
+        final MainActivity that = this;
+
+        // We want settings to close when touching outside of them
+        // TODO : Not working properly for now
+        lv.setOnTouchListener(new View.OnTouchListener(){
+            public boolean onTouch(View v, MotionEvent me) {
+                if (BuildConfig.DEBUG) Log.v(TAG, "Touch list");
+
+                if(settings) {
+                    final MenuItem mi = myToolbar.getMenu().findItem(R.id.action_tune);
+                    ImageView v2 = (ImageView) mi.getActionView();
+                    if(v2 != null) {
+                        Animation rot = AnimationUtils.loadAnimation(that, R.anim.rotate_settings_in);
+                        rot.setFillAfter(true);
+                        v2.startAnimation(rot);
+                    }
+                    Animation anim = AnimationUtils.loadAnimation(that, R.anim.setings_out);
+                    findViewById(R.id.settingsFragmentFrame).startAnimation(anim);
+                    settings = false;
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // Loading exercises :
         exs = Exercises.getInstance();
