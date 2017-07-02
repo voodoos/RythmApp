@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">Rythm</string>
     <string name="action_settings">Settings</string>
-    <string name="btn_start">Start</string>
 
     <string name="pref_difficulty">Difficulty</string>
     <string name="pref_rythm">Ping machine</string>
 
 
     <!-- Exercises names -->
-    <string name="ex_0"></string>
     <string name="action_tune">Tune</string>
 </resources>

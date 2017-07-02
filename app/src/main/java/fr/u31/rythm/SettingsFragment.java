@@ -1,13 +1,10 @@
 package fr.u31.rythm;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 
 /**
  * Created by ulysse on 21/06/2017.

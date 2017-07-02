@@ -1,10 +1,7 @@
 package fr.u31.rythm;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.XmlRes;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParserException;

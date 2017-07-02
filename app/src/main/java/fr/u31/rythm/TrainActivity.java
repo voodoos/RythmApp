@@ -1,6 +1,5 @@
 package fr.u31.rythm;
 
-import android.os.Bundle;
 import android.util.Log;
 
 /**
@@ -14,7 +13,7 @@ public class TrainActivity extends AbstractTrainActivity {
 
     @Override
     protected void newMetronomes() {
-        m_right = new Metronome(r_right, this);
+        /*m_right = new Metronome(r_right, this);
         if(dualHanded) m_left = new Metronome(r_left, this);
 
         try {
@@ -22,13 +21,13 @@ public class TrainActivity extends AbstractTrainActivity {
         }
         catch (BadRythmException e) {
             if (BuildConfig.DEBUG) Log.v(TAG, "Arrrg. bad rythm.");
-        }
+        }*/
     }
 
     @Override
     protected void destroyMetronomes() {
-        m_right.onDestroy();
-        if(dualHanded) m_left.onDestroy();
+       // m_right.onDestroy();
+       // if(dualHanded) m_left.onDestroy();
 
     }
 

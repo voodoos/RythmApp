@@ -2,10 +2,6 @@ package fr.u31.rythm;
 
 import android.content.res.Resources;
 import android.util.Log;
-import android.util.Pair;
-
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 /**
  * Created by ulysse on 21/06/2017.

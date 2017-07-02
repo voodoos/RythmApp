@@ -1,6 +1,5 @@
 package fr.u31.rythm;
 
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 /**

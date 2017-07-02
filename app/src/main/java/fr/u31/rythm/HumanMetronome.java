@@ -1,7 +1,6 @@
 package fr.u31.rythm;
 
 import android.util.Log;
-import android.util.Pair;
 
 /**
  * Created by ulysse on 16/06/2017.

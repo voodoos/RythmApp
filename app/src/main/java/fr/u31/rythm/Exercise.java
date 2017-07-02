@@ -1,15 +1,11 @@
 package fr.u31.rythm;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.io.Serializable;
 
 /**
  * Created by ulysse on 26/06/2017.
