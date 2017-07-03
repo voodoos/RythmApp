@@ -3,6 +3,7 @@ package fr.u31.rythm;
 import android.app.Activity;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -101,8 +102,8 @@ class Rythm {
         if ( !((double)sig.first / (double)sig.second == sum))  throw new BadRythmException();
     }
 
-    LinearLayout getLayout(Activity act, ViewGroup root) {
-        LinearLayout lin = (LinearLayout) act.getLayoutInflater().inflate(R.layout.template_rythm, root, false);
+    LinearLayout getLayout(LayoutInflater li, ViewGroup root) {
+        LinearLayout lin = (LinearLayout) li.inflate(R.layout.template_rythm, root, false);
 
         // Adding notes :
         int idx = index, i = 0;
@@ -112,7 +113,7 @@ class Rythm {
             int n = currentAndForward();
 
             //Creating the Imageview based on the template_note
-            ImageView note = (ImageView) act.getLayoutInflater().inflate(R.layout.template_note, lin, false);
+            ImageView note = (ImageView) li.inflate(R.layout.template_note, lin, false);
 
             // If not the first note, set it's position relatively to the previous one :
             /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) note.getLayoutParams();

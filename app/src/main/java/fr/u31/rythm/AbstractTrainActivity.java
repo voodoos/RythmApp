@@ -86,7 +86,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         exercise_layout = (FrameLayout) findViewById(R.id.exercise);
 
         // Drawing the exercise :
-        RelativeLayout rlex = ex.getLayout(this, exercise_layout);
+        RelativeLayout rlex = ex.getLayout(getLayoutInflater(), exercise_layout);
         rlex.findViewById(R.id.start).setVisibility(View.GONE); // Don't show buttons !
         rlex.findViewById(R.id.ear).setVisibility(View.GONE); // Don't show buttons !
         exercise_layout.addView(rlex);

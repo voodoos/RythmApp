@@ -2,6 +2,8 @@ package fr.u31.rythm;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -39,10 +41,10 @@ public class Exercise {
         r_right.restart();
     }
 
-    RelativeLayout getLayout(Activity act, ViewGroup root) {
+    RelativeLayout getLayout(LayoutInflater li, ViewGroup root) {
         if (BuildConfig.DEBUG) Log.v(TAG, "ExGetLayout");
 
-        RelativeLayout lin = (RelativeLayout) act.getLayoutInflater().inflate(R.layout.template_exercise, root, false);
+        RelativeLayout lin = (RelativeLayout) li.inflate(R.layout.template_exercise, root, false);
 
         // Setting signature :
         LinearLayout sig =  lin.findViewById(R.id.signature);//(LinearLayout) lin.getChildAt(0);
@@ -53,7 +55,7 @@ public class Exercise {
         LinearLayout rc = lin.findViewById(R.id.rythm_container);
 
         // Getting first Rythm :
-        LinearLayout rright = r_right.getLayout(act, rc);
+        LinearLayout rright = r_right.getLayout(li, rc);
 
         rc.addView(rright);
 

@@ -1,6 +1,8 @@
 package fr.u31.rythm;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected Toolbar myToolbar;
     protected SharedPreferences prefs;
+    protected FragmentManager fragm;
 
     private FrameLayout settings_fragment = null;
     private ImageView tune_setting_button_action_view = null;
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         // We have preferences :
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // This sets the default value once and for all (not at everylaunch)
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // We need the fragment manager for showing exercises :
+        fragm = getFragmentManager();
 
         settings_fragment = findViewById(R.id.settingsFragmentFrame);
 
@@ -75,9 +81,19 @@ public class MainActivity extends AppCompatActivity {
         exs = Exercises.getInstance();
         exs.loadExercises(this);
 
+        // One big transaction for all the exercises :
+        FragmentTransaction fragmentTransaction = fragm.beginTransaction();
+
         // Populating !
         for (final Exercise ex: exs.getExercises().values()) {
-            RelativeLayout exl = ex.getLayout(this, lv);
+            // We need a new instance of ou exercise fragment :
+            ExerciceFragment ef = ExerciceFragment.newInstance(ex);
+
+            // We add it :
+            fragmentTransaction.add(lv.getId(), ef);
+
+            // TODO RELINK with fragment
+            RelativeLayout exl = ex.getLayout(getLayoutInflater(), lv);
 
             // Linking the Ear button
             exl.findViewById(R.id.ear).setOnClickListener(new View.OnClickListener() {
@@ -97,8 +113,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            lv.addView(exl);
+            //lv.addView(exl);
         }
+
+        // ENd of the transaction :
+        fragmentTransaction.commit();
 
 
     }
@@ -216,5 +235,9 @@ public class MainActivity extends AppCompatActivity {
 
         intent.putExtra("exercise", exid);
         startActivity(intent);
+    }
+
+    public Exercises getExercises() {
+        return exs;
     }
 }
