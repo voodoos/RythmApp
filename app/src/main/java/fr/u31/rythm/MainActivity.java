@@ -91,29 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
             // We add it :
             fragmentTransaction.add(lv.getId(), ef);
-
-            // TODO RELINK with fragment
-            RelativeLayout exl = ex.getLayout(getLayoutInflater(), lv);
-
-            // Linking the Ear button
-            exl.findViewById(R.id.ear).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (BuildConfig.DEBUG) Log.v(TAG, "Click Ear");
-
-                    //start(ex.getId());
-                }
-            });
-
-            // Linking the Start button
-            exl.findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (BuildConfig.DEBUG) Log.v(TAG, "Click");
-
-                    start(ex.getId());
-                }
-            });
-
-            //lv.addView(exl);
         }
 
         // ENd of the transaction :
@@ -224,20 +201,5 @@ public class MainActivity extends AppCompatActivity {
             settings_fragment.startAnimation(anim);
             settings = false;
         }
-    }
-
-    private void start(final int exid) {
-        Intent intent;
-
-        if(prefs.getBoolean("pref_rythm", false))
-            intent = new Intent(this, TrainActivity.class);
-        else intent = new Intent(this, HumanTrainActivity.class);
-
-        intent.putExtra("exercise", exid);
-        startActivity(intent);
-    }
-
-    public Exercises getExercises() {
-        return exs;
     }
 }
