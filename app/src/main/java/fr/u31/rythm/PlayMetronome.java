@@ -7,21 +7,20 @@ import java.util.Timer;
 /**
  * Created by ulysse on 13/06/2017.
  *
- * Metronome can be human or not :
- * - Non-human metronome = classical metronome
- * - Human metronome allows one to use it's own rythm
+ * PlayMetronome is a simple metronome playing a rythm.
+ * It's used to play a rythm when the user clicks the "ear" icon
+ *
  */
 
-class Metronome extends AbstractMetronome {
+class PlayMetronome extends AbstractMetronome {
     private static final String TAG = "MetronomeC";
     private int t;
     private Timer timer;
     private double tempo = 90;
 
-    Metronome(Rythm r, AbstractTrainActivity a) {
-        super(r, a);
+    PlayMetronome(Rythm r, ExerciceFragment ef) {
+        super(r, ef);
         zero();
-        this.activity = a;
         this.r = r;
 
         timer = new Timer();
@@ -60,8 +59,7 @@ class Metronome extends AbstractMetronome {
 
         if (BuildConfig.DEBUG) Log.v(TAG, "Duration: "+String.valueOf(duration));
 
-        activity.setViewCounter(String.valueOf(duration));
-        activity.redNote(r.index());
+        exFragment.redNote(r.index());
 
 
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));

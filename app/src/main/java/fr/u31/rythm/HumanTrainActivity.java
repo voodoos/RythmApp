@@ -1,6 +1,7 @@
 package fr.u31.rythm;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -15,8 +16,9 @@ public class HumanTrainActivity extends AbstractTrainActivity {
 
     @Override
     protected void newMetronomes() {
-        m_right = new HumanMetronome(ex.getRightRythm(), this);
-        if(dualHanded) m_left = new HumanMetronome(((DualHandedExercise) ex).getLeftRythm(), this);
+        if (BuildConfig.DEBUG) Log.v(TAG, "exf2 "+ exerciceFragment.toString());
+        m_right = new HumanMetronome(ex.getRightRythm(), exerciceFragment);
+        if(dualHanded) m_left = new HumanMetronome(((DualHandedExercise) ex).getLeftRythm(), exerciceFragment);
     }
 
     @Override
@@ -27,6 +29,8 @@ public class HumanTrainActivity extends AbstractTrainActivity {
 
     @Override
     protected void tapAction(boolean right) {
+        if (BuildConfig.DEBUG) Log.v(TAG, "Taping");
+
         Score.scdata scd = null;
 
         if (right) {

@@ -6,14 +6,14 @@ import android.media.MediaPlayer;
  * Created by ulysse on 16/06/2017.
  */
 abstract class AbstractMetronome {
-    AbstractTrainActivity activity;
+    ExerciceFragment exFragment;
     MediaPlayer mp;
     protected Rythm r;
 
-    AbstractMetronome(Rythm r, AbstractTrainActivity a) {
+    AbstractMetronome(Rythm r, ExerciceFragment ef) {
         this.r = r;
-        this.activity = a;
-        mp = MediaPlayer.create(a, R.raw.click);
+        this.exFragment = ef;
+        mp = MediaPlayer.create(ef.getActivity(), R.raw.click);
     }
 
     public void onDestroy() {

@@ -1,6 +1,7 @@
 package fr.u31.rythm;
 
 import android.animation.ObjectAnimator;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -34,6 +35,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     protected SharedPreferences prefs;
     private FrameLayout exercise_layout;
     private ProgressBar progressBar;
+    protected ExerciceFragment exerciceFragment;
 
     protected boolean dualHanded;
 
@@ -80,24 +82,38 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         score = new Score(Difficulty.which(d), getResources());
 
         //Getting pointer to the progressbar :
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         // Getting pointer to the exercise layout :
-        exercise_layout = (FrameLayout) findViewById(R.id.exercise);
+        exercise_layout = findViewById(R.id.exercise);
 
-        // Drawing the exercise :
-        RelativeLayout rlex = ex.getLayout(getLayoutInflater(), exercise_layout);
+        // Displaying the exercise fragment :
+        exerciceFragment = ExerciceFragment.newInstance(ex);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.exercise, exerciceFragment);
+        fragmentTransaction.commit();
+
+
+        if (BuildConfig.DEBUG) Log.v(TAG, "exf1 "+ exerciceFragment.toString());
+
+
+        /*RelativeLayout rlex = ex.getLayout(getLayoutInflater(), exercise_layout);
         rlex.findViewById(R.id.start).setVisibility(View.GONE); // Don't show buttons !
         rlex.findViewById(R.id.ear).setVisibility(View.GONE); // Don't show buttons !
-        exercise_layout.addView(rlex);
+        exercise_layout.addView(rlex);*/
 
         // Dual Handed ? Let's show the tap !
         if (dualHanded) {
             if (BuildConfig.DEBUG) Log.v(TAG, "Dualhanded, we show the tap");
             findViewById(R.id.LeftTap).setVisibility(View.VISIBLE);
         }
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         // Starting the metronomes (metronomes are more than metronomes, they are the time keepers)
+        // We must wait for Start else exercice fragment is not yet attached to the activity (and getActivity returns null)
         newMetronomes();
     }
 
@@ -115,7 +131,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     }
 
     /**
-     * The Metronome is more than a ticking device, it's the time master
+     * The PlayMetronome is more than a ticking device, it's the time master
      */
     protected abstract void newMetronomes();
 
@@ -281,6 +297,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
      */
     public boolean onTouch(View sv, MotionEvent me) {
         // Which hand ?
+
         boolean rightTap = sv.getId() == R.id.RightTap;
 
         if(me.getActionMasked() == MotionEvent.ACTION_DOWN)

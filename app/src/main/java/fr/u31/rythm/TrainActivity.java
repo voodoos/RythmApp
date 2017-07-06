@@ -13,8 +13,8 @@ public class TrainActivity extends AbstractTrainActivity {
 
     @Override
     protected void newMetronomes() {
-        /*m_right = new Metronome(r_right, this);
-        if(dualHanded) m_left = new Metronome(r_left, this);
+        /*m_right = new PlayMetronome(r_right, this);
+        if(dualHanded) m_left = new PlayMetronome(r_left, this);
 
         try {
             pm = new PingMachine(4, 4, 960, this);
