@@ -21,16 +21,19 @@ import android.widget.RelativeLayout;
 
 public class ExerciceFragment extends Fragment {
     private static final String TAG = "ExFrag";
+    public static final boolean SHOW_CONTROLS = true;
+    public static final  boolean HIDE_CONTROLS = false;
     private PlayMetronome playMet = null;
 
     private Exercises exs;
     private RelativeLayout layout;
 
-    public static ExerciceFragment newInstance(Exercise ex) {
+    public static ExerciceFragment newInstance(Exercise ex, boolean showControls) {
         ExerciceFragment ef = new ExerciceFragment();
 
         Bundle args = new Bundle();
         args.putInt("ex_id", ex.getId());
+        args.putBoolean("show_controls", showControls);
 
         ef.setArguments(args);
 
@@ -48,35 +51,43 @@ public class ExerciceFragment extends Fragment {
         if(getExerciseId() >= 0) {
             layout =  exs.getExercise(getExerciseId()).getLayout(li, container);
 
-            // Click listener to launch training
-            layout.findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (BuildConfig.DEBUG) Log.v(TAG, "Click Drum");
+            // If controls are to be shown we add some listeners :
+            if(getShowControls()) {
+                // Click listener to launch training
+                layout.findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (BuildConfig.DEBUG) Log.v(TAG, "Click Drum");
 
-                    //((MainActivity) getActivity()).start(getExerciseId());
+                        //((MainActivity) getActivity()).start(getExerciseId());
 
 
-                    // Launching train activyty on click :
-                    Intent intent;
+                        // Launching train activyty on click :
+                        Intent intent;
 
-                    if(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_rythm", false))
-                        intent = new Intent(getActivity(), TrainActivity.class);
-                    else intent = new Intent(getActivity(), HumanTrainActivity.class);
+                        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("pref_rythm", false))
+                            intent = new Intent(getActivity(), TrainActivity.class);
+                        else intent = new Intent(getActivity(), HumanTrainActivity.class);
 
-                    intent.putExtra("exercise", getExerciseId());
-                    startActivity(intent);
-                }
-            });
+                        intent.putExtra("exercise", getExerciseId());
+                        startActivity(intent);
+                    }
+                });
 
-            // Click listener to hear de beat :
-            layout.findViewById(R.id.ear).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (BuildConfig.DEBUG) Log.v(TAG, "Click ear");
+                // Click listener to hear de beat :
+                layout.findViewById(R.id.ear).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (BuildConfig.DEBUG) Log.v(TAG, "Click ear");
 
-                    //((MainActivity) getActivity()).start(getExerciseId());
-                }
-            });
+                        //((MainActivity) getActivity()).start(getExerciseId());
+                    }
+                });
 
+            }
+            else {
+                // We hide the controls :
+                layout.findViewById(R.id.start).setVisibility(View.GONE);
+                layout.findViewById(R.id.ear).setVisibility(View.GONE);
+            }
 
             return layout;
         }
@@ -91,6 +102,9 @@ public class ExerciceFragment extends Fragment {
 
     public int getExerciseId() {
         return getArguments().getInt("ex_id", -1);
+    }
+    public boolean getShowControls() {
+        return getArguments().getBoolean("show_controls", true);
     }
 
     /**

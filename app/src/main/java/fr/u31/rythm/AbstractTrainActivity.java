@@ -42,8 +42,6 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     protected Score score;
     protected AbstractMetronome m_left, m_right;
     protected Exercise ex;
-    protected Rythm r_left, r_right;
-    protected ArrayList<ImageView> rightNotesViews, leftNotesViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +63,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Adding the ActionBar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
         // Get a support ActionBar corresponding to this toolbar
@@ -88,7 +86,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
         exercise_layout = findViewById(R.id.exercise);
 
         // Displaying the exercise fragment :
-        exerciceFragment = ExerciceFragment.newInstance(ex);
+        exerciceFragment = ExerciceFragment.newInstance(ex, ExerciceFragment.HIDE_CONTROLS);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.exercise, exerciceFragment);
         fragmentTransaction.commit();
@@ -96,11 +94,6 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
         if (BuildConfig.DEBUG) Log.v(TAG, "exf1 "+ exerciceFragment.toString());
 
-
-        /*RelativeLayout rlex = ex.getLayout(getLayoutInflater(), exercise_layout);
-        rlex.findViewById(R.id.start).setVisibility(View.GONE); // Don't show buttons !
-        rlex.findViewById(R.id.ear).setVisibility(View.GONE); // Don't show buttons !
-        exercise_layout.addView(rlex);*/
 
         // Dual Handed ? Let's show the tap !
         if (dualHanded) {
@@ -246,46 +239,6 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
 
     public int getProgress() {
         return progressBar.getProgress();
-    }
-
-    /**
-     * Red note.
-     *
-     * @param id the id
-     */
-    public void redNote(int id) {
-        boolean right = true;
-
-        // Getting the scroller to center played note:
-        HorizontalScrollView hsv = exercise_layout.findViewById(R.id.rythm_scroll);
-
-        int noteNbr;
-
-        LinearLayout notesContainer;
-        LinearLayout rContainer = (LinearLayout) exercise_layout.findViewById(R.id.rythm_container);
-
-        if(right) {
-            notesContainer = (LinearLayout) rContainer.getChildAt(0);
-        }
-        else {
-            notesContainer = (LinearLayout) rContainer.getChildAt(1);
-        }
-
-        noteNbr = notesContainer.getChildCount();
-
-        //Resetting all notes to black :
-        for (int i = 0; i < noteNbr; i++) {
-            setViewNoteColor((ImageView) notesContainer.getChildAt(i), Color.parseColor("#000000"));
-        }
-
-        // Actual note in red :
-        if (BuildConfig.DEBUG) Log.v(TAG, "id: " + id + "Noteid: " + id);
-        setViewNoteColor((ImageView) notesContainer.getChildAt(id), Color.parseColor("#D41C1C"));
-
-        Rect rect = new Rect();
-        notesContainer.getChildAt(id).getGlobalVisibleRect(rect);
-
-        hsv.smoothScrollTo((int) (((double) id / (double) noteNbr) * (double) hsv.getMaxScrollAmount ()), 0);
     }
 
     /* onCLick actions */

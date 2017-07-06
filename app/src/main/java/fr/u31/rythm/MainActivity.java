@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         // Populating !
         for (final Exercise ex: exs.getExercises().values()) {
             // We need a new instance of ou exercise fragment :
-            ExerciceFragment ef = ExerciceFragment.newInstance(ex);
+            ExerciceFragment ef = ExerciceFragment.newInstance(ex, ExerciceFragment.SHOW_CONTROLS);
 
             // We add it :
             fragmentTransaction.add(lv.getId(), ef);
