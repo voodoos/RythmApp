@@ -26,6 +26,7 @@ public class ExerciceFragment extends Fragment {
     private PlayMetronome playMet = null;
 
     private Exercises exs;
+    private Exercise ex;
     private RelativeLayout layout;
 
     public static ExerciceFragment newInstance(Exercise ex, boolean showControls) {
@@ -49,7 +50,8 @@ public class ExerciceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater li, ViewGroup container, Bundle bundle) {
         if(getExerciseId() >= 0) {
-            layout =  exs.getExercise(getExerciseId()).getLayout(li, container);
+            ex = exs.getExercise(getExerciseId());
+            layout =  ex.getLayout(li, container);
 
             // If controls are to be shown we add some listeners :
             if(getShowControls()) {
@@ -74,11 +76,14 @@ public class ExerciceFragment extends Fragment {
                 });
 
                 // Click listener to hear de beat :
+                final ExerciceFragment that = this;
                 layout.findViewById(R.id.ear).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (BuildConfig.DEBUG) Log.v(TAG, "Click ear");
 
-                        //((MainActivity) getActivity()).start(getExerciseId());
+                        if(playMet == null) playMet = new PlayMetronome(ex.getRightRythm(), that);
+                        if(playMet.isPlaying()) playMet.stop();
+                        else playMet.start();
                     }
                 });
 

@@ -17,6 +17,8 @@ abstract class AbstractMetronome {
     }
 
     public void onDestroy() {
+        // Closing the media player
+        // TODO Check that's correct...
         mp.stop();
         mp.reset();
         mp.release();

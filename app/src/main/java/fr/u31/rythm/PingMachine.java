@@ -5,6 +5,10 @@ import java.util.Timer;
 
 /**
  * Created by thevo on 23/06/2017.
+ *
+ * The PingMachine is a metronome ticking at a regular rate.
+ * In fact it's a standard metronome.
+ *
  */
 
 public class PingMachine extends AbstractMetronome {

@@ -7,24 +7,21 @@ import java.util.Timer;
 /**
  * Created by ulysse on 13/06/2017.
  *
- * PlayMetronome is a simple metronome playing a rythm.
+ * PlayMetronome is a simple metronome used to play a rythm.
  * It's used to play a rythm when the user clicks the "ear" icon
  *
  */
 
 class PlayMetronome extends AbstractMetronome {
     private static final String TAG = "MetronomeC";
-    private int t;
+    private boolean isPlaying;
     private Timer timer;
     private double tempo = 90;
 
+
     PlayMetronome(Rythm r, ExerciceFragment ef) {
         super(r, ef);
-        zero();
         this.r = r;
-
-        timer = new Timer();
-        tick();
 
     }
 
@@ -36,24 +33,32 @@ class PlayMetronome extends AbstractMetronome {
         stop();
     }
 
-
-    private void zero() {
-        t = 0;
-    }
     private void nextTick(double delay){
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(delay));
+        // TODO normalize tempo...(everywhere)
         timer.schedule(new TickTask(this), (long)(delay*tempo*50));
     }
 
-    private void stop(){
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void start() {
+        timer = new Timer(); // We always need a timer after cancelling another one
+        r.restart();
+        tick();
+        isPlaying = true;
+    }
+
+    public void stop(){
         timer.cancel();
+        timer = null;
+        isPlaying = false;
     }
 
     public double tick() {
-        t++;
-
         // Fancy sound
-        //if(r.is_time()) mp.start();
+        if(r.is_time()) mp.start();
 
         int duration = r.currentAndForward();
 

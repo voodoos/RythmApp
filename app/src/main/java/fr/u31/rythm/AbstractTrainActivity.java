@@ -106,7 +106,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     public void onStart() {
         super.onStart();
         // Starting the metronomes (metronomes are more than metronomes, they are the time keepers)
-        // We must wait for Start else exercice fragment is not yet attached to the activity (and getActivity returns null)
+        // We must wait for onStart else exercice fragment is not yet attached to the activity (and getActivity returns null)
         newMetronomes();
     }
 
@@ -124,7 +124,7 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
     }
 
     /**
-     * The PlayMetronome is more than a ticking device, it's the time master
+     * Metronomes should always be killed cleanly when ending the activity (timers can go wrong !)
      */
     protected abstract void newMetronomes();
 
@@ -188,22 +188,6 @@ public abstract class AbstractTrainActivity extends AppCompatActivity implements
                 if(i > 2) ((TextView)findViewById(R.id.early)).setText("<<<");
                 else if(i > 1) ((TextView)findViewById(R.id.early)).setText("<<");
                 else if(i > 0) ((TextView)findViewById(R.id.early)).setText("<");
-            }
-        });
-    }
-
-
-    /**
-     * Set view note color.
-     *
-     * @param id    the id of the image
-     * @param color the new color
-     */
-    protected void setViewNoteColor(final ImageView id, final int color){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                id.setColorFilter(color);
             }
         });
     }
