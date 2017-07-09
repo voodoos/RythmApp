@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainAct";
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected Toolbar myToolbar;
     protected SharedPreferences prefs;
     protected FragmentManager fragm;
+    protected List<ExerciceFragment> exfrags;
 
     private FrameLayout settings_fragment = null;
     private ImageView tune_setting_button_action_view = null;
@@ -98,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     // Menu icons are inflated just as they were with actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

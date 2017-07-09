@@ -81,9 +81,9 @@ public class ExerciceFragment extends Fragment {
                     public void onClick(View v) {
                         if (BuildConfig.DEBUG) Log.v(TAG, "Click ear");
 
-                        if(playMet == null) playMet = new PlayMetronome(ex.getRightRythm(), that);
-                        if(playMet.isPlaying()) playMet.stop();
-                        else playMet.start();
+                        if(playMet == null) playMet = new PlayMetronome(ex, that);
+                        if(playMet.isPlaying()) stopPlaying();
+                        else startPlaying();
                     }
                 });
 
@@ -101,8 +101,9 @@ public class ExerciceFragment extends Fragment {
 
     @Override
     public void onPause() {
+        // Stop playing! (if we don't, this continue in background)
+        stopPlaying();
         super.onPause();
-
     }
 
     public int getExerciseId() {
@@ -168,5 +169,13 @@ public class ExerciceFragment extends Fragment {
                 id.setColorFilter(color);
             }
         });
+    }
+
+    private void startPlaying() {
+       if(playMet != null) playMet.start();
+    }
+
+    private void stopPlaying() {
+        if(playMet != null) playMet.stop();
     }
 }

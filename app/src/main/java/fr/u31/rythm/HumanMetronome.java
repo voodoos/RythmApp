@@ -13,9 +13,9 @@ public class HumanMetronome extends AbstractMetronome {
     private int previousNote = 0;
     private Average previousTempo;
 
-    public HumanMetronome(Rythm r, ExerciceFragment ef) {
+    public HumanMetronome(Exercise ex, ExerciceFragment ef) {
 
-        super(r, ef);
+        super(ex, ef);
 
         // We average the tempo other 4 samples :
         previousTempo = new Average(4);
@@ -53,9 +53,9 @@ public class HumanMetronome extends AbstractMetronome {
 
         if (BuildConfig.DEBUG) Log.v(TAG, "Redding");
 
-        exFragment.redNote(r.index());
+        exFragment.redNote(ex.getRightRythm().index());
 
-        previousNote =  r.currentAndForward();
+        previousNote =  ex.getRightRythm().currentAndForward();
         previousTime = tapTime;
 
         return ret;

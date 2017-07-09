@@ -8,11 +8,11 @@ import android.media.MediaPlayer;
 abstract class AbstractMetronome {
     ExerciceFragment exFragment;
     MediaPlayer mp;
-    protected Rythm r;
+    Exercise ex;
 
-    AbstractMetronome(Rythm r, ExerciceFragment ef) {
-        this.r = r;
+    AbstractMetronome(Exercise ex, ExerciceFragment ef) {
         this.exFragment = ef;
+        this.ex = ex;
         mp = MediaPlayer.create(ef.getActivity(), R.raw.click);
     }
 

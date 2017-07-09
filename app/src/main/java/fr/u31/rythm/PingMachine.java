@@ -16,7 +16,7 @@ public class PingMachine extends AbstractMetronome {
     private Timer timer;
 
     PingMachine(int times, int unit, int bpm, ExerciceFragment ata) throws BadRythmException {
-        super(constructRythm(unit), ata);
+        super(new Exercise(-1, "", 96,constructRythm(unit)), ata);
 
         this.bpm = bpm;
         timer = new Timer();

@@ -17,14 +17,14 @@ public class HumanTrainActivity extends AbstractTrainActivity {
     @Override
     protected void newMetronomes() {
         if (BuildConfig.DEBUG) Log.v(TAG, "exf2 "+ exerciceFragment.toString());
-        m_right = new HumanMetronome(ex.getRightRythm(), exerciceFragment);
-        if(dualHanded) m_left = new HumanMetronome(((DualHandedExercise) ex).getLeftRythm(), exerciceFragment);
+        m_right = new HumanMetronome(ex, exerciceFragment);
+        //if(dualHanded) m_left = new HumanMetronome(((DualHandedExercise) ex, exerciceFragment);
     }
 
     @Override
     protected void destroyMetronomes() {
         m_right.onDestroy();
-        if(dualHanded) m_left.onDestroy();
+//        if(dualHanded) m_left.onDestroy();
     }
 
     @Override

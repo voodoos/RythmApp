@@ -19,9 +19,8 @@ class PlayMetronome extends AbstractMetronome {
     private double tempo = 90;
 
 
-    PlayMetronome(Rythm r, ExerciceFragment ef) {
-        super(r, ef);
-        this.r = r;
+    PlayMetronome(Exercise ex, ExerciceFragment ef) {
+        super(ex, ef);
 
     }
 
@@ -44,27 +43,32 @@ class PlayMetronome extends AbstractMetronome {
     }
 
     public void start() {
-        timer = new Timer(); // We always need a timer after cancelling another one
-        r.restart();
-        tick();
-        isPlaying = true;
+        if(!isPlaying) {
+            timer = new Timer(); // We always need a timer after cancelling another one
+            ex.getRightRythm().restart();
+            tick();
+            isPlaying = true;
+        }
     }
 
     public void stop(){
-        timer.cancel();
-        timer = null;
-        isPlaying = false;
+        if(isPlaying) {
+            timer.cancel();
+            timer = null;
+            isPlaying = false;
+        }
     }
 
     public double tick() {
         // Fancy sound
-        if(r.is_time()) mp.start();
+        if(ex.getRightRythm().is_time()) mp.start();
 
-        int duration = r.currentAndForward();
+        int current_idx = ex.getRightRythm().index();
+        int duration = ex.getRightRythm().currentAndForward();
 
         if (BuildConfig.DEBUG) Log.v(TAG, "Duration: "+String.valueOf(duration));
 
-        exFragment.redNote(r.index());
+        exFragment.redNote(current_idx);
 
 
         if (BuildConfig.DEBUG) Log.v(TAG, "delay: "+String.valueOf(1./(double)duration));
